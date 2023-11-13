@@ -1,8 +1,8 @@
 import { randomUUID } from "crypto";
-import { UseCase } from "../common/UseCase";
 import { ApplicationError } from "../common/errors";
 import { prismaClient } from "../constants";
 import { User } from "../models/User";
+import { UseCase } from "./UseCase";
 
 type SignUpParams = {
   name: string;

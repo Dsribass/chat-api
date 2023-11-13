@@ -12,11 +12,20 @@ datasource db {
 }
 
 model User {
-  id       String @id
-  email    String @unique
-  name     String
-  password String
+  id           String        @id
+  email        String        @unique
+  name         String
+  password     String
+  refreshToken RefreshToken?
 
   @@map("users")
 }
 
+model RefreshToken {
+  token     String @id
+  expiresIn Int
+  user      User   @relation(fields: [userId], references: [id])
+  userId    String @unique
+
+  @@map("refresh_tokens")
+}
