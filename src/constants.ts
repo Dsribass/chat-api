@@ -1,14 +1,14 @@
 import { PrismaClient } from "@prisma/client";
+import { AuthenticationHandler } from "./common/AuthenticationHandler";
 import { SignInController } from "./controllers/SignInController";
 import { SignUpUserController } from "./controllers/SignUpController";
+import { SaveRefreshTokenUseCase } from "./useCases/SaveRefreshTokenUseCase";
 import { SignInUseCase } from "./useCases/SignInUseCase";
 import { SignUpUseCase } from "./useCases/SignUpUseCase";
-import { SaveUserRefreshTokenUseCase } from "./useCases/SaveUserRefreshTokenUseCase";
-import { AuthenticationHandler } from "./common/AuthenticationHandler";
 
 export const prismaClient = new PrismaClient();
 
-export const saveUserRefreshTokenUseCase = new SaveUserRefreshTokenUseCase();
+export const saveRefreshTokenUseCase = new SaveRefreshTokenUseCase();
 
 export const signUpUserUseCase = new SignUpUseCase();
 

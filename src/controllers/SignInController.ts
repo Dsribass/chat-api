@@ -1,7 +1,7 @@
 import { FastifyReply, FastifyRequest } from "fastify";
 import {
   authenticationHandler,
-  saveUserRefreshTokenUseCase,
+  saveRefreshTokenUseCase,
   signInUseCase,
 } from "../constants";
 import { SignInParams } from "../useCases/SignInUseCase";
@@ -13,11 +13,14 @@ export class SignInController {
   ) {
     const user = await signInUseCase.execute(request.body);
     const tokens = await authenticationHandler.generateUserToken(user);
-    await saveUserRefreshTokenUseCase.execute(tokens.refreshToken);
+    await saveRefreshTokenUseCase.execute({
+      token: tokens.refreshToken,
+      userId: user.id,
+    });
 
     reply.code(200).send({
       accessToken: tokens.accessToken,
-      refreshToken: tokens.refreshToken.token,
+      refreshToken: tokens.refreshToken,
     });
   }
 }
