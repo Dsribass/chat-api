@@ -16,20 +16,3 @@ Content-type: application/json
     "email": "teste@email.com",
     "password": "123123"
 }
-
-###
-
-# GET http://localhost:3000/videos
-
-# ###
-# DELETE http://localhost:3000/videos/1710970b-1516-4859-92d0-d13279e690f2
-
-# ###
-# PUT  http://localhost:3000/videos/1710970b-1516-4859-92d0-d13279e690f2
-# Content-type: application/json
-
-# {
-#     "title": "Homem Aranha",
-#     "description": "Batman Movie",
-#     "url": "http://www.youtube.com/watch?v=1234567890"
-# }
