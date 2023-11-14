@@ -1,27 +1,36 @@
-import { FastifyInstance } from "fastify";
+import { FastifyInstance, HookHandlerDoneFunction } from "fastify";
 import { signInUserController, signUpUserController } from "./constants";
+import { ensureClientIsAuthorized } from "./middlewares/ensureClientIsAuthorized";
 
-const routeInformation = {
-  auth: {
-    signUp: {
-      path: "/auth/signup",
-      handler: signUpUserController.handler,
-    },
-    signIn: {
-      path: "/auth/signin",
-      handler: signInUserController.handler,
-    },
+const routes = {
+  auth: (
+    fastify: FastifyInstance,
+    options: any,
+    done: HookHandlerDoneFunction
+  ) => {
+    fastify.post("/sign-in", signInUserController.handler);
+    fastify.post("/sign-up", signUpUserController.handler);
+
+    done();
+  },
+  home: (
+    fastify: FastifyInstance,
+    options: any,
+    done: HookHandlerDoneFunction
+  ) => {
+    fastify.addHook("preValidation", ensureClientIsAuthorized);
+
+    fastify.get("/", async (request, reply) => {
+      return { hello: "world" };
+    });
+
+    done();
   },
 };
 
-async function routes(fastify: FastifyInstance, options: any) {
-  authRoutes(fastify, options);
+async function applicationRoutes(instance: FastifyInstance, options: any) {
+  instance.register(routes.auth, { prefix: "/auth" });
+  instance.register(routes.home);
 }
 
-function authRoutes(fastify: FastifyInstance, options: any) {
-  const auth = routeInformation.auth;
-  fastify.post(auth.signUp.path, auth.signUp.handler);
-  fastify.post(auth.signIn.path, auth.signIn.handler);
-}
-
-export { routes, routeInformation };
+export { applicationRoutes };

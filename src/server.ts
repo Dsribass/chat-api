@@ -1,8 +1,7 @@
 import dotenv from "dotenv";
 import Fastify, { FastifyInstance } from "fastify";
 import { prismaClient } from "./constants";
-import { routeInformation, routes } from "./routes";
-import { ensureClientIsAuthorized } from "./middlewares/ensureClientIsAuthorized";
+import { applicationRoutes } from "./routes";
 
 const start = async () => {
   dotenv.config();
@@ -10,10 +9,7 @@ const start = async () => {
   const server = Fastify({ logger: true });
 
   try {
-    server.addHook("onRequest", ensureClientIsAuthorized);
-
-    server.register(routes);
-
+    server.register(applicationRoutes);
     await server.listen({ port: 3000 });
   } catch (err) {
     prismaClient.$disconnect();
