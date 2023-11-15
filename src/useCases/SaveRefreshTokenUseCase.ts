@@ -1,9 +1,15 @@
 import { prismaClient } from "../constants";
-import { RefreshToken } from "../models/RefreshToken";
 import { UseCase } from "./UseCase";
 
-export class SaveRefreshTokenUseCase implements UseCase<RefreshToken, void> {
-  async execute(param: RefreshToken) {
+interface SaveRefreshTokenParam {
+  token: string;
+  userId: string;
+}
+
+export class SaveRefreshTokenUseCase
+  implements UseCase<SaveRefreshTokenParam, void>
+{
+  async execute(param: SaveRefreshTokenParam) {
     await prismaClient.refreshToken.create({
       data: {
         token: param.token,

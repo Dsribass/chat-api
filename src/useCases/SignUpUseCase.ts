@@ -34,4 +34,4 @@ class SignUpUseCase implements UseCase<SignUpParams, User> {
   }
 }
 
-export { SignUpParams, SignUpUseCase };
+export { SignUpUseCase };

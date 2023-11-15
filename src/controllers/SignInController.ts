@@ -4,11 +4,15 @@ import {
   saveRefreshTokenUseCase,
   signInUseCase,
 } from "../constants";
-import { SignInParams } from "../useCases/SignInUseCase";
+
+interface ISignInBody {
+  email: string;
+  password: string;
+}
 
 export class SignInController {
   async handler(
-    request: FastifyRequest<{ Body: SignInParams }>,
+    request: FastifyRequest<{ Body: ISignInBody }>,
     reply: FastifyReply
   ) {
     const user = await signInUseCase.execute(request.body);
