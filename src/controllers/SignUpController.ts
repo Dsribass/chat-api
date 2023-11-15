@@ -12,7 +12,7 @@ export class SignUpUserController {
     reply: FastifyReply
   ) {
     const user = await signUpUserUseCase.execute(request.body);
-    const tokens = await authenticationHandler.generateUserToken(user);
+    const tokens = authenticationHandler.generateUserToken(user);
     await saveRefreshTokenUseCase.execute({
       token: tokens.refreshToken,
       userId: user.id,

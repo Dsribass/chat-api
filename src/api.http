@@ -1,18 +1,32 @@
-POST http://localhost:3000/auth/signup
+POST http://localhost:3000/auth/sign-up
 Content-type: application/json
 
 {
     "name": "teste",
     "email": "teste@email.com",
-    "password": "123123"
+    "password": "1234567"
 }
 
 ###
 
-POST http://localhost:3000/auth/signin
+POST http://localhost:3000/auth/sign-in
 Content-type: application/json
 
 {
     "email": "teste@email.com",
-    "password": "123123"
+    "password": "1234567"
 }
+
+###
+
+POST http://localhost:3000/auth/refresh-token
+Content-type: application/json
+
+{
+    "refreshToken": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpYXQiOjE3MDAwNTcxMjksImV4cCI6MTcwMTI2NjcyOSwic3ViIjoiN2UzODI4NzAtODcwZi00YWE1LTk3MDEtYjMxZWU1MWFlMTg5In0.5yktnpuFnuo9fyAHCfW_-h8Jf50knG7Ef9fbJfkA4Ac"
+}
+
+### 
+GET http://localhost:3000/
+Content-type: application/json
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyIjp7ImlkIjoiN2UzODI4NzAtODcwZi00YWE1LTk3MDEtYjMxZWU1MWFlMTg5IiwiZW1haWwiOiJ0ZXN0ZUBlbWFpbC5jb20iLCJuYW1lIjoidGVzdGUiLCJwYXNzd29yZCI6IjEyMzQ1NjcifSwiaWF0IjoxNzAwMDU2OTYzLCJleHAiOjE3MDAwNTcxNDMsInN1YiI6IjdlMzgyODcwLTg3MGYtNGFhNS05NzAxLWIzMWVlNTFhZTE4OSJ9.V6uFR6lJewVJiXriZzGUWz6ke7KZLckGsTY3xsTRwG8

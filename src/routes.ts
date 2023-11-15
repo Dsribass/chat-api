@@ -1,5 +1,9 @@
 import { FastifyInstance, HookHandlerDoneFunction } from "fastify";
-import { signInUserController, signUpUserController } from "./constants";
+import {
+  refreshTokenController,
+  signInUserController,
+  signUpUserController,
+} from "./constants";
 import { ensureClientIsAuthorized } from "./middlewares/ensureClientIsAuthorized";
 
 const routes = {
@@ -10,6 +14,7 @@ const routes = {
   ) => {
     fastify.post("/sign-in", signInUserController.handler);
     fastify.post("/sign-up", signUpUserController.handler);
+    fastify.post("/refresh-token", refreshTokenController.handler);
 
     done();
   },
