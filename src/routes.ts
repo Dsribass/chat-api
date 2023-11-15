@@ -1,6 +1,6 @@
 import { FastifyInstance, HookHandlerDoneFunction } from "fastify";
 import { Controller } from "./constants";
-import { ensureClientIsAuthorized } from "./middlewares/ensureClientIsAuthorized";
+import { ensureClientIsAuthorized } from "./middlewares/ensure-client-is-authorized";
 
 const routes = {
   auth: (

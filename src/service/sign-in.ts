@@ -1,9 +1,9 @@
 import { PrismaClient } from "@prisma/client";
 import { ApplicationError } from "../common/errors";
-import { User } from "../models/User";
-import { UseCase } from "./UseCase";
+import { User } from "../models/user";
+import { Service } from "./service";
 
-export class SignIn implements UseCase<SignIn.Params, SignIn.Result> {
+export class SignIn implements Service<SignIn.Params, SignIn.Result> {
   constructor(private prismaClient: PrismaClient) {}
 
   async execute(param: SignIn.Params) {

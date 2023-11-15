@@ -1,10 +1,10 @@
 import { PrismaClient } from "@prisma/client";
 import { ApplicationError } from "../common/errors";
-import { UseCase } from "./UseCase";
+import { Service } from "./service";
 
 export class CheckIfRefreshTokenExists
   implements
-    UseCase<CheckIfRefreshTokenExists.Params, CheckIfRefreshTokenExists.Result>
+    Service<CheckIfRefreshTokenExists.Params, CheckIfRefreshTokenExists.Result>
 {
   constructor(private prismaClient: PrismaClient) {}
 

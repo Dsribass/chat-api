@@ -1,7 +1,7 @@
 import { PrismaClient } from "@prisma/client";
 import * as common from "./common";
 import * as controllers from "./controllers";
-import * as uc from "./useCases";
+import * as uc from "./service";
 
 export namespace UseCase {
   export const signIn = new uc.SignIn(Common.prismaClient);

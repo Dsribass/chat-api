@@ -1,10 +1,10 @@
+import { PrismaClient } from "@prisma/client";
 import { randomUUID } from "crypto";
 import { ApplicationError } from "../common/errors";
-import { User } from "../models/User";
-import { UseCase } from "./UseCase";
-import { PrismaClient } from "@prisma/client";
+import { User } from "../models/user";
+import { Service } from "./service";
 
-export class SignUp implements UseCase<SignUp.Params, SignUp.Result> {
+export class SignUp implements Service<SignUp.Params, SignUp.Result> {
   constructor(private prismaClient: PrismaClient) {}
 
   async execute(param: SignUp.Params) {

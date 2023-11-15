@@ -1,7 +1,8 @@
 import dotenv from "dotenv";
-import Fastify, { FastifyInstance } from "fastify";
-import { prismaClient } from "./constants";
+import Fastify from "fastify";
 import { applicationRoutes } from "./routes";
+import env from "./common/env";
+import { Common } from "./constants";
 
 const start = async () => {
   dotenv.config();
@@ -10,9 +11,9 @@ const start = async () => {
 
   try {
     server.register(applicationRoutes);
-    await server.listen({ port: 3000 });
+    await server.listen({ port: env.port });
   } catch (err) {
-    prismaClient.$disconnect();
+    Common.prismaClient.$disconnect();
     server.log.error(err);
     process.exit(1);
   }

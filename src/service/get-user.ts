@@ -1,11 +1,11 @@
 import { PrismaClient } from "@prisma/client";
 import { ApplicationError } from "../common/errors";
-import { User } from "../models/User";
-import { UseCase } from "./UseCase";
+import { User } from "../models/user";
+import { Service } from "./service";
 
-export class GetUser implements UseCase<GetUser.Params, GetUser.Result> {
+export class GetUser implements Service<GetUser.Params, GetUser.Result> {
   constructor(private prismaClient: PrismaClient) {}
-  
+
   async execute(param: GetUser.Params) {
     const user = await this.prismaClient.user.findFirst({
       where: { id: param.id },

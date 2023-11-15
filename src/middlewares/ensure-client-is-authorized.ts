@@ -1,7 +1,7 @@
 import { FastifyReply, FastifyRequest, HookHandlerDoneFunction } from "fastify";
-import { ApplicationError } from "../common/errors";
 import { verify } from "jsonwebtoken";
-import { config } from "../common/config";
+import env from "../common/env";
+import { ApplicationError } from "../common/errors";
 
 function ensureClientIsAuthorized(
   request: FastifyRequest,
@@ -20,7 +20,7 @@ function ensureClientIsAuthorized(
   const [_, token] = bearerToken.split(" ");
 
   try {
-    verify(token, config.access_token_secret);
+    verify(token, env.access_token_secret);
     done();
   } catch (_) {
     throw new ApplicationError({

@@ -1,8 +1,8 @@
 import { PrismaClient } from "@prisma/client";
-import { UseCase } from "./UseCase";
+import { Service } from "./service";
 
 export class SaveRefreshToken
-  implements UseCase<SaveRefreshToken.Params, SaveRefreshToken.Result>
+  implements Service<SaveRefreshToken.Params, SaveRefreshToken.Result>
 {
   constructor(private prismaClient: PrismaClient) {}
 

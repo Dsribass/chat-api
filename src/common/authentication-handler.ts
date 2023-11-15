@@ -1,19 +1,19 @@
 import { sign } from "jsonwebtoken";
-import { User } from "../models/User";
-import { config } from "./config";
+import { User } from "../models/user";
+import env from "./env";
 
 export class AuthenticationHandler {
   generateAccessToken(user: User) {
-    return sign({ user }, config.access_token_secret, {
+    return sign({ user }, env.access_token_secret, {
       subject: user.id,
-      expiresIn: config.access_token_expiration_in_seconds + "s",
+      expiresIn: env.access_token_expiration_in_seconds + "s",
     });
   }
 
   generateRefreshToken(user: User) {
-    return sign({}, config.refresh_token_secret, {
+    return sign({}, env.refresh_token_secret, {
       subject: user.id,
-      expiresIn: config.refresh_token_expiration_in_days + "d",
+      expiresIn: env.refresh_token_expiration_in_days + "d",
     });
   }
 
