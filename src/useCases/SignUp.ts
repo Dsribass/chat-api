@@ -1,18 +1,14 @@
 import { randomUUID } from "crypto";
 import { ApplicationError } from "../common/errors";
-import { prismaClient } from "../constants";
 import { User } from "../models/User";
 import { UseCase } from "./UseCase";
+import { PrismaClient } from "@prisma/client";
 
-type SignUpParams = {
-  name: string;
-  email: string;
-  password: string;
-};
+export class SignUp implements UseCase<SignUp.Params, SignUp.Result> {
+  constructor(private prismaClient: PrismaClient) {}
 
-class SignUpUseCase implements UseCase<SignUpParams, User> {
-  async execute(param: SignUpParams): Promise<User> {
-    const userAlreadyExists = await prismaClient.user.findFirst({
+  async execute(param: SignUp.Params) {
+    const userAlreadyExists = await this.prismaClient.user.findFirst({
       where: { email: param.email },
     });
 
@@ -23,7 +19,7 @@ class SignUpUseCase implements UseCase<SignUpParams, User> {
       });
     }
 
-    return await prismaClient.user.create({
+    return await this.prismaClient.user.create({
       data: {
         id: randomUUID(),
         name: param.name,
@@ -34,4 +30,11 @@ class SignUpUseCase implements UseCase<SignUpParams, User> {
   }
 }
 
-export { SignUpUseCase };
+export namespace SignUp {
+  export type Params = {
+    name: string;
+    email: string;
+    password: string;
+  };
+  export type Result = User;
+}

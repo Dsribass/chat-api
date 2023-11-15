@@ -1,20 +1,11 @@
 import { FastifyReply, FastifyRequest } from "fastify";
-import {
-  authenticationHandler,
-  checkIfRefreshTokenExistsUseCase,
-  getUserUseCase,
-} from "../constants";
 import { verify } from "jsonwebtoken";
-import { config } from "../common/config";
-import { ApplicationError } from "../common/errors";
-
-interface IRefreshTokenBody {
-  refreshToken: string;
-}
+import { ApplicationError, config } from "../common";
+import { Common, UseCase } from "../constants";
 
 export class RefreshTokenController {
   async handler(
-    request: FastifyRequest<{ Body: IRefreshTokenBody }>,
+    request: FastifyRequest<{ Body: RefreshTokenController.Body }>,
     reply: FastifyReply
   ) {
     const { refreshToken } = request.body;
@@ -24,13 +15,13 @@ export class RefreshTokenController {
         sub: string;
       };
 
-      await checkIfRefreshTokenExistsUseCase.execute({
+      await UseCase.checkIfRefreshTokenExists.execute({
         token: refreshToken,
         userId: sub,
       });
 
-      const user = await getUserUseCase.execute({ id: sub });
-      const accessToken = authenticationHandler.generateAccessToken(user);
+      const user = await UseCase.getUser.execute({ id: sub });
+      const accessToken = Common.authenticationHandler.generateAccessToken(user);
 
       reply.send({ accessToken: accessToken });
     } catch (e) {
@@ -43,5 +34,11 @@ export class RefreshTokenController {
         statusCode: 401,
       });
     }
+  }
+}
+
+namespace RefreshTokenController {
+  export interface Body {
+    refreshToken: string;
   }
 }

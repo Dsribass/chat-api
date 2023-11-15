@@ -1,23 +1,14 @@
 import { FastifyReply, FastifyRequest } from "fastify";
-import {
-  authenticationHandler,
-  saveRefreshTokenUseCase,
-  signInUseCase,
-} from "../constants";
-
-interface ISignInBody {
-  email: string;
-  password: string;
-}
+import { Common, UseCase } from "../constants";
 
 export class SignInController {
   async handler(
-    request: FastifyRequest<{ Body: ISignInBody }>,
+    request: FastifyRequest<{ Body: SignInController.Body }>,
     reply: FastifyReply
   ) {
-    const user = await signInUseCase.execute(request.body);
-    const tokens = authenticationHandler.generateUserToken(user);
-    await saveRefreshTokenUseCase.execute({
+    const user = await UseCase.signIn.execute(request.body);
+    const tokens = Common.authenticationHandler.generateUserToken(user);
+    await UseCase.saveRefreshToken.execute({
       token: tokens.refreshToken,
       userId: user.id,
     });
@@ -26,5 +17,12 @@ export class SignInController {
       accessToken: tokens.accessToken,
       refreshToken: tokens.refreshToken,
     });
+  }
+}
+
+namespace SignInController {
+  export interface Body {
+    email: string;
+    password: string;
   }
 }

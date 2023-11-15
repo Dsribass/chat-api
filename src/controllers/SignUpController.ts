@@ -1,24 +1,14 @@
 import { FastifyReply, FastifyRequest } from "fastify";
-import {
-  authenticationHandler,
-  saveRefreshTokenUseCase,
-  signUpUserUseCase,
-} from "../constants";
+import { UseCase, Common } from "../constants";
 
-interface ISignUpUserBody {
-  name: string;
-  email: string;
-  password: string;
-}
-
-export class SignUpUserController {
+export class SignUpController {
   async handler(
-    request: FastifyRequest<{ Body: ISignUpUserBody }>,
+    request: FastifyRequest<{ Body: SignUpController.Body }>,
     reply: FastifyReply
   ) {
-    const user = await signUpUserUseCase.execute(request.body);
-    const tokens = authenticationHandler.generateUserToken(user);
-    await saveRefreshTokenUseCase.execute({
+    const user = await UseCase.signUp.execute(request.body);
+    const tokens = Common.authenticationHandler.generateUserToken(user);
+    await UseCase.saveRefreshToken.execute({
       token: tokens.refreshToken,
       userId: user.id,
     });
@@ -27,5 +17,13 @@ export class SignUpUserController {
       accessToken: tokens.accessToken,
       refreshToken: tokens.refreshToken,
     });
+  }
+}
+
+namespace SignUpController {
+  export interface Body {
+    name: string;
+    email: string;
+    password: string;
   }
 }

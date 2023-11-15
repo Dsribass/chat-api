@@ -1,30 +1,30 @@
 import { PrismaClient } from "@prisma/client";
-import { AuthenticationHandler } from "./common/AuthenticationHandler";
-import { RefreshTokenController } from "./controllers/RefreshTokenController";
-import { SignInController } from "./controllers/SignInController";
-import { SignUpUserController } from "./controllers/SignUpController";
-import { SaveRefreshTokenUseCase } from "./useCases/SaveRefreshTokenUseCase";
-import { SignInUseCase } from "./useCases/SignInUseCase";
-import { SignUpUseCase } from "./useCases/SignUpUseCase";
-import { CheckIfRefreshTokenExistsUseCase } from "./useCases/CheckIfRefreshTokenExistsUseCase";
-import { GetUserUseCase } from "./useCases/GetUserUseCase";
+import * as common from "./common";
+import * as controllers from "./controllers";
+import * as uc from "./useCases";
 
-export const prismaClient = new PrismaClient();
+export namespace UseCase {
+  export const signIn = new uc.SignIn(Common.prismaClient);
 
-export const saveRefreshTokenUseCase = new SaveRefreshTokenUseCase();
+  export const signUp = new uc.SignUp(Common.prismaClient);
 
-export const signUpUserUseCase = new SignUpUseCase();
+  export const checkIfRefreshTokenExists = new uc.CheckIfRefreshTokenExists(
+    Common.prismaClient
+  );
 
-export const signUpUserController = new SignUpUserController();
+  export const getUser = new uc.GetUser(Common.prismaClient);
+  export const saveRefreshToken = new uc.SaveRefreshToken(Common.prismaClient);
+}
 
-export const signInUseCase = new SignInUseCase();
+export namespace Common {
+  export const prismaClient = new PrismaClient();
+  export const authenticationHandler = new common.AuthenticationHandler();
+}
 
-export const signInUserController = new SignInController();
+export namespace Controller {
+  export const signUp = new controllers.SignUpController();
 
-export const authenticationHandler = new AuthenticationHandler();
+  export const signIn = new controllers.SignInController();
 
-export const refreshTokenController = new RefreshTokenController();
-
-export const checkIfRefreshTokenExistsUseCase = new CheckIfRefreshTokenExistsUseCase();
-
-export const getUserUseCase = new GetUserUseCase();
+  export const refreshToken = new controllers.RefreshTokenController();
+}

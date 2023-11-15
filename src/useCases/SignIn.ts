@@ -1,16 +1,13 @@
+import { PrismaClient } from "@prisma/client";
 import { ApplicationError } from "../common/errors";
-import { prismaClient } from "../constants";
 import { User } from "../models/User";
 import { UseCase } from "./UseCase";
 
-type SignInParams = {
-  email: string;
-  password: string;
-};
+export class SignIn implements UseCase<SignIn.Params, SignIn.Result> {
+  constructor(private prismaClient: PrismaClient) {}
 
-class SignInUseCase implements UseCase<SignInParams, User> {
-  async execute(param: SignInParams): Promise<User> {
-    const userAlreadyExists = await prismaClient.user.findFirst({
+  async execute(param: SignIn.Params) {
+    const userAlreadyExists = await this.prismaClient.user.findFirst({
       where: { email: param.email },
     });
 
@@ -34,4 +31,11 @@ class SignInUseCase implements UseCase<SignInParams, User> {
   }
 }
 
-export { SignInParams, SignInUseCase };
+export namespace SignIn {
+  export type Params = {
+    email: string;
+    password: string;
+  };
+
+  export type Result = User;
+}
