@@ -1,6 +1,9 @@
 import { FastifyInstance, HookHandlerDoneFunction } from "fastify";
 import { Controller } from "./constants";
 import { ensureClientIsAuthorized } from "./middlewares/ensure-client-is-authorized";
+import signInSchema from "./schemas/sign-in-schema";
+import signUpSchema from "./schemas/sign-up-schema";
+import refreshTokenSchema from "./schemas/refresh-token-schema";
 
 const routes = {
   auth: (
@@ -8,9 +11,19 @@ const routes = {
     options: any,
     done: HookHandlerDoneFunction
   ) => {
-    fastify.post("/sign-in", Controller.signIn.handler);
-    fastify.post("/sign-up", Controller.signUp.handler);
-    fastify.post("/refresh-token", Controller.refreshToken.handler);
+    fastify.post("/sign-in", {
+      schema: signInSchema,
+      handler: Controller.signIn.handler,
+    });
+    fastify.post("/sign-up", {
+      schema: signUpSchema,
+      handler: Controller.signUp.handler,
+    });
+
+    fastify.post("/refresh-token", {
+      schema: refreshTokenSchema,
+      handler: Controller.refreshToken.handler,
+    });
 
     done();
   },

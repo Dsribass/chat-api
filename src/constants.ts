@@ -1,24 +1,23 @@
 import { PrismaClient } from "@prisma/client";
 import * as common from "./common";
 import * as controllers from "./controllers";
-import * as uc from "./service";
-
-export namespace UseCase {
-  export const signIn = new uc.SignIn(Common.prismaClient);
-
-  export const signUp = new uc.SignUp(Common.prismaClient);
-
-  export const checkIfRefreshTokenExists = new uc.CheckIfRefreshTokenExists(
-    Common.prismaClient
-  );
-
-  export const getUser = new uc.GetUser(Common.prismaClient);
-  export const saveRefreshToken = new uc.SaveRefreshToken(Common.prismaClient);
-}
-
+import * as service from "./services";
 export namespace Common {
   export const prismaClient = new PrismaClient();
   export const authenticationHandler = new common.AuthenticationHandler();
+}
+export namespace Service {
+  export const signIn = new service.SignIn(Common.prismaClient);
+
+  export const signUp = new service.SignUp(Common.prismaClient);
+
+  export const checkIfRefreshTokenExists = new service.CheckIfRefreshTokenExists(
+    Common.prismaClient
+  );
+
+  export const getUser = new service.GetUser(Common.prismaClient);
+
+  export const saveRefreshToken = new service.SaveRefreshToken(Common.prismaClient);
 }
 
 export namespace Controller {

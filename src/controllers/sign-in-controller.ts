@@ -1,14 +1,14 @@
 import { FastifyReply, FastifyRequest } from "fastify";
-import { Common, UseCase } from "../constants";
+import { Common, Service } from "../constants";
 
 export class SignInController {
   async handler(
     request: FastifyRequest<{ Body: SignInController.Body }>,
     reply: FastifyReply
   ) {
-    const user = await UseCase.signIn.execute(request.body);
+    const user = await Service.signIn.execute(request.body);
     const tokens = Common.authenticationHandler.generateUserToken(user);
-    await UseCase.saveRefreshToken.execute({
+    await Service.saveRefreshToken.execute({
       token: tokens.refreshToken,
       userId: user.id,
     });

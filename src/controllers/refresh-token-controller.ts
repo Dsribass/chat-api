@@ -1,7 +1,7 @@
 import { FastifyReply, FastifyRequest } from "fastify";
 import { verify } from "jsonwebtoken";
 import { ApplicationError, config } from "../common";
-import { Common, UseCase } from "../constants";
+import { Common, Service } from "../constants";
 
 export class RefreshTokenController {
   async handler(
@@ -15,13 +15,14 @@ export class RefreshTokenController {
         sub: string;
       };
 
-      await UseCase.checkIfRefreshTokenExists.execute({
+      await Service.checkIfRefreshTokenExists.execute({
         token: refreshToken,
         userId: sub,
       });
 
-      const user = await UseCase.getUser.execute({ id: sub });
-      const accessToken = Common.authenticationHandler.generateAccessToken(user);
+      const user = await Service.getUser.execute({ id: sub });
+      const accessToken =
+        Common.authenticationHandler.generateAccessToken(user);
 
       reply.send({ accessToken: accessToken });
     } catch (e) {
