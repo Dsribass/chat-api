@@ -1,14 +1,14 @@
 import dotenv from "dotenv";
 import Fastify, { FastifyError, FastifyReply, FastifyRequest } from "fastify";
-import { applicationRoutes } from "./routes";
-import env from "./common/env";
-import { Common } from "./constants";
 import {
   ZodTypeProvider,
   serializerCompiler,
   validatorCompiler,
 } from "fastify-type-provider-zod";
 import { ZodError } from "zod";
+import env from "./common/env";
+import { Common } from "./factory";
+import { applicationRoutes } from "./routes";
 
 const start = async () => {
   dotenv.config();
@@ -36,8 +36,8 @@ function errorHandler(
   if (error instanceof ZodError) {
     reply.status(400).send({
       statusCode: 400,
-      error: 'Bad Request',
-      message: 'Validation error',
+      error: "Bad Request",
+      message: "Validation error",
       issues: error.issues,
     });
     return;

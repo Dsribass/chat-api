@@ -1,9 +1,16 @@
 import { FastifyReply, FastifyRequest } from "fastify";
 import { verify } from "jsonwebtoken";
-import { ApplicationError, config } from "../common";
-import { Common, Service } from "../constants";
+import env from "../common/env";
+import { ApplicationError, AuthenticationHandler } from "../common";
+import { CheckIfRefreshTokenExists, GetUser } from "../services";
 
 export class RefreshTokenController {
+  constructor(
+    private readonly checkIfRefreshTokenExists: CheckIfRefreshTokenExists,
+    private readonly getUser: GetUser,
+    private readonly authenticationHandler: AuthenticationHandler
+  ) {}
+
   async handler(
     request: FastifyRequest<{ Body: RefreshTokenController.Body }>,
     reply: FastifyReply
@@ -11,18 +18,17 @@ export class RefreshTokenController {
     const { refreshToken } = request.body;
 
     try {
-      const { sub } = verify(refreshToken, config.refresh_token_secret) as {
+      const { sub } = verify(refreshToken, env.refresh_token_secret) as {
         sub: string;
       };
 
-      await Service.checkIfRefreshTokenExists.execute({
+      await this.checkIfRefreshTokenExists.execute({
         token: refreshToken,
         userId: sub,
       });
 
-      const user = await Service.getUser.execute({ id: sub });
-      const accessToken =
-        Common.authenticationHandler.generateAccessToken(user);
+      const user = await this.getUser.execute({ id: sub });
+      const accessToken = this.authenticationHandler.generateAccessToken(user);
 
       reply.send({ accessToken: accessToken });
     } catch (e) {
