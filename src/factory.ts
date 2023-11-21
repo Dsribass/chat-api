@@ -7,46 +7,46 @@ const prismaClient = new PrismaClient();
 
 const authenticationHandler = new common.AuthenticationHandler();
 
-export function makeCheckIfRefreshTokenExists() {
+export const makeCheckIfRefreshTokenExists = () => {
   return new service.CheckIfRefreshTokenExists(prismaClient);
-}
+};
 
-export function makeGetUser() {
+export const makeGetUser = () => {
   return new service.GetUser(prismaClient);
-}
+};
 
-export function makeSaveRefreshToken() {
+export const makeSaveRefreshToken = () => {
   return new service.SaveRefreshToken(prismaClient);
-}
+};
 
-export function makeSignIn() {
+export const makeSignIn = () => {
   return new service.SignIn(prismaClient);
-}
+};
 
-export function makeSignUp() {
+export const makeSignUp = () => {
   return new service.SignUp(prismaClient);
-}
+};
 
-export function makeRefreshTokenController() {
+export const makeRefreshTokenController = () => {
   return new controllers.RefreshTokenController(
     makeCheckIfRefreshTokenExists(),
     makeGetUser(),
     authenticationHandler
   );
-}
+};
 
-export function makeSignInController() {
+export const makeSignInController = () => {
   return new controllers.SignInController(
     makeSignIn(),
     makeSaveRefreshToken(),
     authenticationHandler
   );
-}
+};
 
-export function makeSignUpController() {
+export const makeSignUpController = () => {
   return new controllers.SignUpController(
     makeSignUp(),
     makeSaveRefreshToken(),
     authenticationHandler
   );
-}
+};

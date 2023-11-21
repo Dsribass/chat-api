@@ -9,7 +9,9 @@ export class RefreshTokenController {
     private readonly checkIfRefreshTokenExists: CheckIfRefreshTokenExists,
     private readonly getUser: GetUser,
     private readonly authenticationHandler: AuthenticationHandler
-  ) {}
+  ) {
+    this.handler = this.handler.bind(this);
+  }
 
   async handler(
     request: FastifyRequest<{ Body: RefreshTokenController.Body }>,

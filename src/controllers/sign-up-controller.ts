@@ -7,7 +7,9 @@ export class SignUpController {
     private readonly signUp: SignUp,
     private readonly saveRefreshToken: SaveRefreshToken,
     private readonly authenticationHandler: AuthenticationHandler
-  ) {}
+  ) {
+    this.handler = this.handler.bind(this);
+  }
 
   async handler(
     request: FastifyRequest<{ Body: SignUpController.Body }>,

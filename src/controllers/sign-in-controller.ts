@@ -1,13 +1,16 @@
 import { FastifyReply, FastifyRequest } from "fastify";
 import { AuthenticationHandler } from "../common";
 import { SignIn, SaveRefreshToken } from "../services";
+import { PrismaClient } from "@prisma/client";
 
 export class SignInController {
   constructor(
     private readonly signIn: SignIn,
     private readonly saveRefreshToken: SaveRefreshToken,
     private readonly authenticationHandler: AuthenticationHandler
-  ) {}
+  ) {
+    this.handler = this.handler.bind(this);
+  }
 
   async handler(
     request: FastifyRequest<{ Body: SignInController.Body }>,
