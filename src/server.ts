@@ -6,8 +6,6 @@ import {
   validatorCompiler,
 } from "fastify-type-provider-zod";
 import { ZodError } from "zod";
-import env from "./common/env";
-import { Common } from "./factory";
 import { applicationRoutes } from "./routes";
 
 const start = async () => {
@@ -20,9 +18,8 @@ const start = async () => {
     server.setSerializerCompiler(serializerCompiler);
     server.setErrorHandler(errorHandler);
     await server.register(applicationRoutes);
-    await server.listen({ port: env.port });
+    await server.listen({ port: process.env.PORT });
   } catch (err) {
-    Common.prismaClient.$disconnect();
     server.log.error(err);
     process.exit(1);
   }

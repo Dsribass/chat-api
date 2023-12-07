@@ -1,6 +1,5 @@
 import { FastifyReply, FastifyRequest, HookHandlerDoneFunction } from "fastify";
 import { verify } from "jsonwebtoken";
-import env from "../common/env";
 import { ApplicationError } from "../common/errors";
 
 function ensureClientIsAuthorized(
@@ -20,7 +19,7 @@ function ensureClientIsAuthorized(
   const [_, token] = bearerToken.split(" ");
 
   try {
-    verify(token, env.access_token_secret);
+    verify(token, process.env.ACCESS_TOKEN_SECRET);
     done();
   } catch (_) {
     throw new ApplicationError({

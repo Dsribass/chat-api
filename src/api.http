@@ -4,7 +4,7 @@ Content-type: application/json
 {
     "name": "teste",
     "email": "teste@email.com",
-    "password": "1234567"
+    "password": "12345678"
 }
 
 ###
@@ -13,8 +13,8 @@ POST http://localhost:3000/auth/sign-in
 Content-type: application/json
 
 {
-    "email": "teste@email.com",
-    "password": "1234567"
+    "email": "testeja@email.com",
+    "password": "12345678"
 }
 
 ###
@@ -23,7 +23,7 @@ POST http://localhost:3000/auth/refresh-token
 Content-type: application/json
 
 {
-    "refreshToken": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpYXQiOjE3MDAwNTcxMjksImV4cCI6MTcwMTI2NjcyOSwic3ViIjoiN2UzODI4NzAtODcwZi00YWE1LTk3MDEtYjMxZWU1MWFlMTg5In0.5yktnpuFnuo9fyAHCfW_-h8Jf50knG7Ef9fbJfkA4Ac"
+    "refreshToken": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpYXQiOjE3MDA2NzgzMzQsImV4cCI6MTcwMzI3MDMzNCwic3ViIjoiYzkzOGI5NDUtYmFmYy00NWUwLWIxN2EtNWRiMGJkNmQ3NGFmIn0.y91mweGdwGp8uW8hRC_EM2S1CcSPJc8APz9a7ebdCMc"
 }
 
 ### 

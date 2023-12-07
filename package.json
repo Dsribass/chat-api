@@ -4,6 +4,7 @@
   "description": "",
   "main": "index.js",
   "scripts": {
+    "type-check": "tsc",
     "start": "tsx ./src/server.ts",
     "start:dev": "tsx watch ./src/server.ts"
   },
@@ -12,6 +13,7 @@
   "license": "ISC",
   "dependencies": {
     "@prisma/client": "^5.5.2",
+    "bcrypt": "^5.1.1",
     "dayjs": "^1.11.10",
     "dotenv": "^16.3.1",
     "fastify": "^4.24.2",
@@ -19,6 +21,7 @@
     "jsonwebtoken": "^9.0.2"
   },
   "devDependencies": {
+    "@types/bcrypt": "^5.0.2",
     "@types/jsonwebtoken": "^9.0.4",
     "@types/node": "^20.8.7",
     "prisma": "^5.5.2",

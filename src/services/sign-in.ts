@@ -2,6 +2,7 @@ import { PrismaClient } from "@prisma/client";
 import { ApplicationError } from "../common/errors";
 import { User } from "../models/user";
 import { Service } from "./service";
+import bcrypt from "bcrypt";
 
 export class SignIn implements Service<SignIn.Params, SignIn.Result> {
   constructor(private prismaClient: PrismaClient) {}
@@ -18,7 +19,10 @@ export class SignIn implements Service<SignIn.Params, SignIn.Result> {
       });
     }
 
-    const passwordMatch = userAlreadyExists.password === param.password;
+    const passwordMatch = bcrypt.compareSync(
+      param.password,
+      userAlreadyExists.password
+    );
 
     if (!passwordMatch) {
       throw new ApplicationError({

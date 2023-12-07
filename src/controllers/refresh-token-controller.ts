@@ -1,6 +1,5 @@
 import { FastifyReply, FastifyRequest } from "fastify";
 import { verify } from "jsonwebtoken";
-import env from "../common/env";
 import { ApplicationError, AuthenticationHandler } from "../common";
 import { CheckIfRefreshTokenExists, GetUser } from "../services";
 
@@ -20,7 +19,7 @@ export class RefreshTokenController {
     const { refreshToken } = request.body;
 
     try {
-      const { sub } = verify(refreshToken, env.refresh_token_secret) as {
+      const { sub } = verify(refreshToken, process.env.REFRESH_TOKEN_SECRET) as {
         sub: string;
       };
 
