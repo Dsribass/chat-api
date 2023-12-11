@@ -22,14 +22,16 @@ export class SignUp implements Service<SignUp.Params, SignUp.Result> {
 
     const hashedPassword = bcrypt.hashSync(param.password, 10);
 
-    return await this.prismaClient.user.create({
-      data: {
-        id: randomUUID(),
-        name: param.name,
-        email: param.email,
-        password: hashedPassword,
-      },
-    });
+    return await this.prismaClient.user
+      .create({
+        data: {
+          id: randomUUID(),
+          name: param.name,
+          email: param.email,
+          password: hashedPassword,
+        },
+      })
+      .then((user) => new User({ ...user }));
   }
 }
 

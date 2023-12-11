@@ -18,7 +18,7 @@ export class GetUser implements Service<GetUser.Params, GetUser.Result> {
       });
     }
 
-    return user;
+    return new User({ ...user });
   }
 }
 

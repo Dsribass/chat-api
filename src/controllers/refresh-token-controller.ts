@@ -2,6 +2,7 @@ import { FastifyReply, FastifyRequest } from "fastify";
 import { verify } from "jsonwebtoken";
 import { ApplicationError, AuthenticationHandler } from "../common";
 import { CheckIfRefreshTokenExists, GetUser } from "../services";
+import { User } from "../models/user";
 
 export class RefreshTokenController {
   constructor(
@@ -19,7 +20,10 @@ export class RefreshTokenController {
     const { refreshToken } = request.body;
 
     try {
-      const { sub } = verify(refreshToken, process.env.REFRESH_TOKEN_SECRET) as {
+      const { sub } = verify(
+        refreshToken,
+        process.env.REFRESH_TOKEN_SECRET
+      ) as {
         sub: string;
       };
 
@@ -28,7 +32,9 @@ export class RefreshTokenController {
         userId: sub,
       });
 
-      const user = await this.getUser.execute({ id: sub });
+      const user = await this.getUser
+        .execute({ id: sub })
+        .then((user) => new User({ ...user }));
       const accessToken = this.authenticationHandler.generateAccessToken(user);
 
       reply.send({ accessToken: accessToken });

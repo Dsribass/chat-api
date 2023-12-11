@@ -31,7 +31,7 @@ export class SignIn implements Service<SignIn.Params, SignIn.Result> {
       });
     }
 
-    return userAlreadyExists;
+    return new User({ ...userAlreadyExists });
   }
 }
 

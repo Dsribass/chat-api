@@ -1,6 +1,7 @@
 import { FastifyReply, FastifyRequest } from "fastify";
 import { AuthenticationHandler } from "../common";
 import { SignUp, SaveRefreshToken } from "../services";
+import { User } from "../models/user";
 
 export class SignUpController {
   constructor(
@@ -15,7 +16,9 @@ export class SignUpController {
     request: FastifyRequest<{ Body: SignUpController.Body }>,
     reply: FastifyReply
   ) {
-    const user = await this.signUp.execute(request.body);
+    const user = await this.signUp
+      .execute(request.body)
+      .then((user) => new User({ ...user }));
     const tokens = this.authenticationHandler.generateUserToken(user);
     await this.saveRefreshToken.execute({
       token: tokens.refreshToken,
