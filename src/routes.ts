@@ -1,6 +1,10 @@
 import { FastifyInstance, HookHandlerDoneFunction } from "fastify";
-import { makeRefreshTokenController, makeSignInController, makeSignUpController } from "./factory";
-import { ensureClientIsAuthorized } from "./middlewares/ensure-client-is-authorized";
+import { ChatServer } from "./common/socket-io/namespace/chat-server";
+import {
+  makeRefreshTokenController,
+  makeSignInController,
+  makeSignUpController,
+} from "./factory";
 import refreshTokenSchema from "./schemas/refresh-token-schema";
 import signInSchema from "./schemas/sign-in-schema";
 import signUpSchema from "./schemas/sign-up-schema";
@@ -28,16 +32,14 @@ const routes = {
 
     done();
   },
-  home: (
+  chat: (
     fastify: FastifyInstance,
     options: any,
     done: HookHandlerDoneFunction
   ) => {
-    fastify.addHook("preValidation", ensureClientIsAuthorized);
+    const chat: ChatServer = fastify.io.of("/chat");
 
-    fastify.get("/", async (request, reply) => {
-      return { hello: "world" };
-    });
+    chat.on("connection", (socket) => {});
 
     done();
   },
@@ -45,7 +47,7 @@ const routes = {
 
 async function applicationRoutes(instance: FastifyInstance, options: any) {
   instance.register(routes.auth, { prefix: "/auth" });
-  instance.register(routes.home);
+  instance.register(routes.chat, { prefix: "/chat" });
 }
 
 export { applicationRoutes };

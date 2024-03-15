@@ -7,20 +7,23 @@ import {
 } from "fastify-type-provider-zod";
 import { ZodError } from "zod";
 import { applicationRoutes } from "./routes";
+import socketIoPlugin from "./common/socket-io/socket-io-plugin";
 
 const start = async () => {
   dotenv.config();
 
-  const server = Fastify({ logger: true }).withTypeProvider<ZodTypeProvider>();
+  const app = Fastify({ logger: true }).withTypeProvider<ZodTypeProvider>();
 
   try {
-    server.setValidatorCompiler(validatorCompiler);
-    server.setSerializerCompiler(serializerCompiler);
-    server.setErrorHandler(errorHandler);
-    await server.register(applicationRoutes);
-    await server.listen({ port: process.env.PORT });
+    app.setValidatorCompiler(validatorCompiler);
+    app.setSerializerCompiler(serializerCompiler);
+    app.setErrorHandler(errorHandler);
+    app.register(socketIoPlugin);
+
+    await app.register(applicationRoutes);
+    await app.listen({ port: process.env.PORT });
   } catch (err) {
-    server.log.error(err);
+    app.log.error(err);
     process.exit(1);
   }
 };
