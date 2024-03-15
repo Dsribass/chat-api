@@ -1,6 +1,7 @@
 import { FastifyInstance, HookHandlerDoneFunction } from "fastify";
 import { ChatServer } from "./common/socket-io/namespace/chat-server";
 import {
+  makeCreateChannelController,
   makeRefreshTokenController,
   makeSignInController,
   makeSignUpController,
@@ -8,6 +9,8 @@ import {
 import refreshTokenSchema from "./schemas/refresh-token-schema";
 import signInSchema from "./schemas/sign-in-schema";
 import signUpSchema from "./schemas/sign-up-schema";
+import { ensureClientIsAuthorized } from "./middlewares/ensure-client-is-authorized";
+import createChannelSchema from "./schemas/create-channel-schema";
 
 const routes = {
   auth: (
@@ -37,9 +40,15 @@ const routes = {
     options: any,
     done: HookHandlerDoneFunction
   ) => {
-    const chat: ChatServer = fastify.io.of("/chat");
+    const chatIO: ChatServer = fastify.io.of("/chat");
+    fastify.addHook("preValidation", ensureClientIsAuthorized);
 
-    chat.on("connection", (socket) => {});
+    fastify.post("/channels", {
+      schema: createChannelSchema,
+      handler: makeCreateChannelController().handler,
+    });
+
+    chatIO.on("connection", (socket) => {});
 
     done();
   },

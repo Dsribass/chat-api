@@ -3,7 +3,7 @@ Content-type: application/json
 
 {
     "name": "teste",
-    "email": "teste@email.com",
+    "email": "teste2@email.com",
     "password": "12345678"
 }
 
@@ -23,10 +23,19 @@ POST http://localhost:3000/auth/refresh-token
 Content-type: application/json
 
 {
-    "refreshToken": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpYXQiOjE3MDA2NzgzMzQsImV4cCI6MTcwMzI3MDMzNCwic3ViIjoiYzkzOGI5NDUtYmFmYy00NWUwLWIxN2EtNWRiMGJkNmQ3NGFmIn0.y91mweGdwGp8uW8hRC_EM2S1CcSPJc8APz9a7ebdCMc"
+    "refreshToken": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpYXQiOjE3MTA1MDc4MjIsImV4cCI6MTcxMzA5OTgyMiwic3ViIjoiOWI3ZDViMmMtNmJhYi00MzMyLTliZmEtNTZmOGU2N2FiMmJmIn0.c4XPJ6ReGfXHGVa0fWts_j4sikaDnPNskMJOTJbRc6k"
 }
 
 ### 
-GET http://localhost:3000/
+POST http://localhost:3000/chat/channel
 Content-type: application/json
-Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyIjp7ImlkIjoiN2UzODI4NzAtODcwZi00YWE1LTk3MDEtYjMxZWU1MWFlMTg5IiwiZW1haWwiOiJ0ZXN0ZUBlbWFpbC5jb20iLCJuYW1lIjoidGVzdGUiLCJwYXNzd29yZCI6IjEyMzQ1NjcifSwiaWF0IjoxNzAwMDU2OTYzLCJleHAiOjE3MDAwNTcxNDMsInN1YiI6IjdlMzgyODcwLTg3MGYtNGFhNS05NzAxLWIzMWVlNTFhZTE4OSJ9.V6uFR6lJewVJiXriZzGUWz6ke7KZLckGsTY3xsTRwG8
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyIjp7ImlkIjoiOWI3ZDViMmMtNmJhYi00MzMyLTliZmEtNTZmOGU2N2FiMmJmIiwibmFtZSI6InRlc3RlIiwiZW1haWwiOiJ0ZXN0ZTJAZW1haWwuY29tIiwiY2hhbm5lbHMiOltdfSwiaWF0IjoxNzEwNTA4MDU4LCJleHAiOjE3MTA1MDgyMzgsInN1YiI6IjliN2Q1YjJjLTZiYWItNDMzMi05YmZhLTU2ZjhlNjdhYjJiZiJ9.279tZGGZJYnY08ZnP7b0fVrX_1s7BlCVlmRoE2loou4
+
+{
+    "type": "group",
+    "name": null,
+    "members": [
+        "teste@teste.com",
+        "teste2@teste.com"
+    ]
+}

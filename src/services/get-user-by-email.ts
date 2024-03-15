@@ -3,12 +3,12 @@ import { ApplicationError } from "../common/errors";
 import { User } from "../models/user";
 import { Service } from "./service";
 
-export class GetUser implements Service<GetUser.Params, GetUser.Result> {
+export class GetUserByEmail implements Service<GetUserByEmail.Params, GetUserByEmail.Result> {
   constructor(private prismaClient: PrismaClient) {}
 
-  async execute(param: GetUser.Params) {
+  async execute(param: GetUserByEmail.Params) {
     const user = await this.prismaClient.user.findFirst({
-      where: { id: param.id },
+      where: { email: param.email },
     });
 
     if (!user) {
@@ -22,9 +22,9 @@ export class GetUser implements Service<GetUser.Params, GetUser.Result> {
   }
 }
 
-export namespace GetUser {
+export namespace GetUserByEmail {
   export type Params = {
-    id: string;
+    email: string;
   };
 
   export type Result = User;

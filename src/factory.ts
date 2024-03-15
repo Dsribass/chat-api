@@ -11,8 +11,12 @@ export const makeCheckIfRefreshTokenExists = () => {
   return new service.CheckIfRefreshTokenExists(prismaClient);
 };
 
-export const makeGetUser = () => {
-  return new service.GetUser(prismaClient);
+export const makeGetUserById = () => {
+  return new service.GetUserById(prismaClient);
+};
+
+export const makeGetUserByEmail = () => {
+  return new service.GetUserByEmail(prismaClient);
 };
 
 export const makeSaveRefreshToken = () => {
@@ -30,7 +34,7 @@ export const makeSignUp = () => {
 export const makeRefreshTokenController = () => {
   return new controllers.RefreshTokenController(
     makeCheckIfRefreshTokenExists(),
-    makeGetUser(),
+    makeGetUserById(),
     authenticationHandler
   );
 };
@@ -48,5 +52,11 @@ export const makeSignUpController = () => {
     makeSignUp(),
     makeSaveRefreshToken(),
     authenticationHandler
+  );
+};
+
+export const makeCreateChannelController = () => {
+  return new controllers.CreateChannelController(
+    makeGetUserByEmail(),
   );
 };
