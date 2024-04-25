@@ -6,12 +6,12 @@ class User {
     id?: string;
     name: string;
     email: string;
-    channel?: Channel[];
+    channels?: Channel[];
   }) {
     this.id = props.id ?? randomUUID();
     this.name = props.name;
     this.email = props.email;
-    this.channels = props.channel ?? [];
+    this.channels = props.channels ?? [];
   }
 
   public readonly id: string;

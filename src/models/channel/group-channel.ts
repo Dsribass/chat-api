@@ -1,13 +1,12 @@
 import { randomUUID } from "crypto";
 import { Message } from "../message";
-import { Channel } from "./channel";
-import { User } from "../user";
+import { Channel, ChannelUser } from "./channel";
 
 export class GroupChannel implements Channel {
   constructor(props: {
     id?: string;
     name: string;
-    members: User[];
+    members: ChannelUser[];
     messages?: Message[];
   }) {
     this.id = props.id ?? randomUUID();
@@ -18,6 +17,6 @@ export class GroupChannel implements Channel {
 
   readonly id: string;
   readonly name: string;
-  readonly members: User[];
+  readonly members: ChannelUser[];
   readonly messages: Message[];
 }

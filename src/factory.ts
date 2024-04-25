@@ -11,12 +11,8 @@ export const makeCheckIfRefreshTokenExists = () => {
   return new service.CheckIfRefreshTokenExists(prismaClient);
 };
 
-export const makeGetUserById = () => {
-  return new service.GetUserById(prismaClient);
-};
-
-export const makeGetUserByEmail = () => {
-  return new service.GetUserByEmail(prismaClient);
+export const makeGetUser = () => {
+  return new service.GetUser(prismaClient);
 };
 
 export const makeSaveRefreshToken = () => {
@@ -31,10 +27,18 @@ export const makeSignUp = () => {
   return new service.SignUp(prismaClient);
 };
 
+export const makeCreateDirectChannel = () => {
+  return new service.CreateDirectChannel(prismaClient);
+};
+
+export const makeCreateGroupChannel = () => {
+  return new service.CreateGroupChannel(prismaClient);
+};
+
 export const makeRefreshTokenController = () => {
   return new controllers.RefreshTokenController(
     makeCheckIfRefreshTokenExists(),
-    makeGetUserById(),
+    makeGetUser(),
     authenticationHandler
   );
 };
@@ -57,6 +61,8 @@ export const makeSignUpController = () => {
 
 export const makeCreateChannelController = () => {
   return new controllers.CreateChannelController(
-    makeGetUserByEmail(),
+    makeGetUser(),
+    makeCreateDirectChannel(),
+    makeCreateGroupChannel()
   );
 };

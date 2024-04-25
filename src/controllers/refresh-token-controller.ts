@@ -2,12 +2,12 @@ import { FastifyReply, FastifyRequest } from "fastify";
 import { verify } from "jsonwebtoken";
 import { ApplicationError, AuthenticationHandler } from "../common";
 import { User } from "../models/user";
-import { CheckIfRefreshTokenExists, GetUserById } from "../services";
+import { CheckIfRefreshTokenExists, GetUser } from "../services";
 
 export class RefreshTokenController {
   constructor(
     private readonly checkIfRefreshTokenExists: CheckIfRefreshTokenExists,
-    private readonly getUser: GetUserById,
+    private readonly getUser: GetUser,
     private readonly authenticationHandler: AuthenticationHandler
   ) {
     this.handler = this.handler.bind(this);
@@ -33,7 +33,7 @@ export class RefreshTokenController {
       });
 
       const user = await this.getUser
-        .execute({ id: sub })
+        .execute({ by: "id", id: sub })
         .then((user) => new User({ ...user }));
       const accessToken = this.authenticationHandler.generateAccessToken(user);
 
