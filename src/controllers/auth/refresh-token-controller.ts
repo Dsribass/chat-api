@@ -1,8 +1,8 @@
 import { FastifyReply, FastifyRequest } from "fastify";
 import { verify } from "jsonwebtoken";
-import { ApplicationError, AuthenticationHandler } from "../common";
-import { User } from "../models/user";
-import { ITokenService, IUserService } from "../services";
+import { ApplicationError, AuthenticationHandler } from "../../common";
+import { User } from "../../models/user";
+import { ITokenService, IUserService } from "../../services";
 
 export class RefreshTokenController {
   constructor(

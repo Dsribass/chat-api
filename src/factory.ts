@@ -49,3 +49,11 @@ export const makeCreateChannelController = () => {
     makeUserService()
   );
 };
+
+export const makeDeleteChannelController = () => {
+  return new controllers.DeleteChannelController(makeChannelService());
+};
+
+export const makeUpdateChannelController = () => {
+  return new controllers.UpdateChannelController(makeChannelService());
+};

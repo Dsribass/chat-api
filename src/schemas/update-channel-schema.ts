@@ -4,7 +4,8 @@ import channelSchemaProps from "./channel-schema-props";
 
 export default {
   body: z.object({
-    type: z.enum(["group", "direct"]),
-    ...channelSchemaProps,
+    id: z.string(),
+    name: channelSchemaProps.name,
+    members: channelSchemaProps.members.optional(),
   }),
 } as FastifySchema;

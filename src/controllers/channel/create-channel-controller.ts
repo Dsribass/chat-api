@@ -1,9 +1,9 @@
 import { FastifyReply, FastifyRequest } from "fastify";
-import { ApplicationError } from "../common";
-import { GroupChannel } from "../models/channel/group-channel";
-import { DirectChannel } from "../models/channel/direct-channel";
-import { User } from "../models/user";
-import { IChannelService, IUserService } from "../services";
+import { ApplicationError } from "../../common";
+import { DirectChannel } from "../../models/channel/direct-channel";
+import { GroupChannel } from "../../models/channel/group-channel";
+import { User } from "../../models/user";
+import { IChannelService, IUserService } from "../../services";
 
 export class CreateChannelController {
   constructor(
@@ -26,6 +26,7 @@ export class CreateChannelController {
 
   private async createChannel(body: CreateChannelController.Body) {
     const { type, name, members } = body;
+    
     if (type === "group") {
       if (members.length < 2) {
         throw new ApplicationError({

@@ -1,9 +1,9 @@
 import { FastifyReply, FastifyRequest } from "fastify";
-import { AuthenticationHandler } from "../common";
-import { User } from "../models/user";
-import { ITokenService, IUserService } from "../services";
+import { AuthenticationHandler } from "../../common";
+import { User } from "../../models/user";
+import { ITokenService, IUserService } from "../../services";
 
-export class SignUpController {
+export class SignInController {
   constructor(
     private readonly userService: IUserService,
     private readonly tokenService: ITokenService,
@@ -13,28 +13,28 @@ export class SignUpController {
   }
 
   async handler(
-    request: FastifyRequest<{ Body: SignUpController.Body }>,
+    request: FastifyRequest<{ Body: SignInController.Body }>,
     reply: FastifyReply
   ) {
     const user = await this.userService
-      .createUser(request.body)
+      .authenticate(request.body)
       .then((user) => new User({ ...user }));
+
     const tokens = this.authenticationHandler.generateUserToken(user);
     await this.tokenService.persistRefreshToken({
       token: tokens.refreshToken,
       userId: user.id,
     });
 
-    reply.code(201).send({
+    reply.code(200).send({
       accessToken: tokens.accessToken,
       refreshToken: tokens.refreshToken,
     });
   }
 }
 
-namespace SignUpController {
+namespace SignInController {
   export interface Body {
-    name: string;
     email: string;
     password: string;
   }
