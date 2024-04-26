@@ -1,12 +1,12 @@
 import { FastifyReply, FastifyRequest } from "fastify";
 import { AuthenticationHandler } from "../common";
-import { SignUp, SaveRefreshToken } from "../services";
 import { User } from "../models/user";
+import { ITokenService, IUserService } from "../services";
 
 export class SignUpController {
   constructor(
-    private readonly signUp: SignUp,
-    private readonly saveRefreshToken: SaveRefreshToken,
+    private readonly userService: IUserService,
+    private readonly tokenService: ITokenService,
     private readonly authenticationHandler: AuthenticationHandler
   ) {
     this.handler = this.handler.bind(this);
@@ -16,11 +16,11 @@ export class SignUpController {
     request: FastifyRequest<{ Body: SignUpController.Body }>,
     reply: FastifyReply
   ) {
-    const user = await this.signUp
-      .execute(request.body)
+    const user = await this.userService
+      .createUser(request.body)
       .then((user) => new User({ ...user }));
     const tokens = this.authenticationHandler.generateUserToken(user);
-    await this.saveRefreshToken.execute({
+    await this.tokenService.persistRefreshToken({
       token: tokens.refreshToken,
       userId: user.id,
     });

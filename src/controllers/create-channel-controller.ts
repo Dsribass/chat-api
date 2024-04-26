@@ -3,15 +3,12 @@ import { ApplicationError } from "../common";
 import { GroupChannel } from "../models/channel/group-channel";
 import { DirectChannel } from "../models/channel/direct-channel";
 import { User } from "../models/user";
-import { CreateDirectChannel } from "../services/create-direct-channel";
-import { CreateGroupChannel } from "../services/create-group-channel";
-import { GetUser } from "../services";
+import { IChannelService, IUserService } from "../services";
 
 export class CreateChannelController {
   constructor(
-    private readonly getUser: GetUser,
-    private readonly createDirectChannel: CreateDirectChannel,
-    private readonly createGroupChannel: CreateGroupChannel
+    private readonly channelService: IChannelService,
+    private readonly userService: IUserService
   ) {
     this.handler = this.handler.bind(this);
   }
@@ -47,18 +44,11 @@ export class CreateChannelController {
       const groupChannel = new GroupChannel({
         name,
         members: await Promise.all(
-          members.map((email) =>
-            this.getUser.execute({
-              by: "email",
-              email,
-            })
-          )
+          members.map((email) => this.userService.getUserByEmail({ email }))
         ),
       });
 
-      console.log(groupChannel);
-
-      await this.createGroupChannel.execute({ channel: groupChannel });
+      await this.channelService.createGroupChannel({ channel: groupChannel });
 
       return groupChannel.id;
     } else {
@@ -71,18 +61,11 @@ export class CreateChannelController {
 
       const directChannel = new DirectChannel({
         members: (await Promise.all(
-          members.map((email) =>
-            this.getUser.execute({
-              by: "email",
-              email,
-            })
-          )
+          members.map((email) => this.userService.getUserByEmail({ email }))
         )) as [User, User],
       });
 
-      console.log(directChannel);
-
-      await this.createDirectChannel.execute({ channel: directChannel });
+      await this.channelService.createDirectChannel({ channel: directChannel });
 
       return directChannel.id;
     }

@@ -7,62 +7,45 @@ const prismaClient = new PrismaClient();
 
 const authenticationHandler = new common.AuthenticationHandler();
 
-export const makeCheckIfRefreshTokenExists = () => {
-  return new service.CheckIfRefreshTokenExists(prismaClient);
+const makeChannelService = () => {
+  return new service.ChannelService(prismaClient);
 };
 
-export const makeGetUser = () => {
-  return new service.GetUser(prismaClient);
+const makeTokenService = () => {
+  return new service.TokenService(prismaClient);
 };
 
-export const makeSaveRefreshToken = () => {
-  return new service.SaveRefreshToken(prismaClient);
-};
-
-export const makeSignIn = () => {
-  return new service.SignIn(prismaClient);
-};
-
-export const makeSignUp = () => {
-  return new service.SignUp(prismaClient);
-};
-
-export const makeCreateDirectChannel = () => {
-  return new service.CreateDirectChannel(prismaClient);
-};
-
-export const makeCreateGroupChannel = () => {
-  return new service.CreateGroupChannel(prismaClient);
+const makeUserService = () => {
+  return new service.UserService(prismaClient);
 };
 
 export const makeRefreshTokenController = () => {
   return new controllers.RefreshTokenController(
-    makeCheckIfRefreshTokenExists(),
-    makeGetUser(),
+    makeUserService(),
+    makeTokenService(),
     authenticationHandler
   );
 };
 
 export const makeSignInController = () => {
   return new controllers.SignInController(
-    makeSignIn(),
-    makeSaveRefreshToken(),
+    makeUserService(),
+    makeTokenService(),
     authenticationHandler
   );
 };
 
 export const makeSignUpController = () => {
   return new controllers.SignUpController(
-    makeSignUp(),
-    makeSaveRefreshToken(),
+    makeUserService(),
+    makeTokenService(),
     authenticationHandler
   );
 };
 
 export const makeCreateChannelController = () => {
   return new controllers.CreateChannelController(
-    makeGetUser(),
-    makeCreateDirectChannel(),
-    makeCreateGroupChannel()
+    makeChannelService(),
+    makeUserService()
   );
 };
