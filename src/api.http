@@ -3,17 +3,16 @@ Content-type: application/json
 
 {
     "name": "teste",
-    "email": "testeja@email.com",
+    "email": "teste@email.com",
     "password": "12345678"
 }
 
 ###
-
 POST http://localhost:3000/auth/sign-in
 Content-type: application/json
 
 {
-    "email": "teste2@email.com",
+    "email": "testeja@email.com",
     "password": "12345678"
 }
 
@@ -22,33 +21,59 @@ POST http://localhost:3000/auth/refresh-token
 Content-type: application/json
 
 {
-    "refreshToken": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpYXQiOjE3MTQwNzg0MTYsImV4cCI6MTcxNjY3MDQxNiwic3ViIjoiOWI3ZDViMmMtNmJhYi00MzMyLTliZmEtNTZmOGU2N2FiMmJmIn0.wJyxF4-RAlCgwlQF3ebk_DhpKs9akK2cmTpUh1SpV3Q"
+    "refreshToken": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpYXQiOjE3MjAyMDM4NDYsImV4cCI6MTcyMjc5NTg0Niwic3ViIjoiYmJkYzk4Y2QtZjhmMC00ZDJiLWEzZGQtZDhjMjBkNzc5MDE1In0.Rvq8RKW4CnY_7CtkSRfez6jBqmXqJhdqKxgqYoSImWA"
 }
 
 ### 
 POST http://localhost:3000/chat/channels
 Content-type: application/json
-Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyIjp7ImlkIjoiOWI3ZDViMmMtNmJhYi00MzMyLTliZmEtNTZmOGU2N2FiMmJmIiwibmFtZSI6InRlc3RlIiwiZW1haWwiOiJ0ZXN0ZTJAZW1haWwuY29tIiwiY2hhbm5lbHMiOlt7ImlkIjoiNWE0NTkzMDEtMDI0ZS00M2I3LWJhNGUtYWZjY2Q3ZDBhNDM5IiwibmFtZSI6bnVsbCwibWVtYmVycyI6W3siaWQiOiJjOTM4Yjk0NS1iYWZjLTQ1ZTAtYjE3YS01ZGIwYmQ2ZDc0YWYiLCJuYW1lIjoidGVzdGUiLCJlbWFpbCI6InRlc3RlQGVtYWlsLmNvbSIsImNoYW5uZWxzIjpbXX0seyJpZCI6IjliN2Q1YjJjLTZiYWItNDMzMi05YmZhLTU2ZjhlNjdhYjJiZiIsIm5hbWUiOiJ0ZXN0ZSIsImVtYWlsIjoidGVzdGUyQGVtYWlsLmNvbSIsImNoYW5uZWxzIjpbXX1dLCJtZXNzYWdlcyI6W119LHsiaWQiOiJmYWI0NjQ3My1mODlhLTQ3ZTQtYTY0YS0wYmI4ZmU4NTBlZDEiLCJtZW1iZXJzIjpbeyJpZCI6ImM5MzhiOTQ1LWJhZmMtNDVlMC1iMTdhLTVkYjBiZDZkNzRhZiIsIm5hbWUiOiJ0ZXN0ZSIsImVtYWlsIjoidGVzdGVAZW1haWwuY29tIiwiY2hhbm5lbHMiOltdfSx7ImlkIjoiOWI3ZDViMmMtNmJhYi00MzMyLTliZmEtNTZmOGU2N2FiMmJmIiwibmFtZSI6InRlc3RlIiwiZW1haWwiOiJ0ZXN0ZTJAZW1haWwuY29tIiwiY2hhbm5lbHMiOltdfV0sIm1lc3NhZ2VzIjpbXX0seyJpZCI6IjkwNTJiNTQwLWZjY2YtNDIzNi1hZTVjLWFjOTI2NTcxMjhiMyIsIm5hbWUiOiJUZXN0ZSIsIm1lbWJlcnMiOlt7ImlkIjoiYzkzOGI5NDUtYmFmYy00NWUwLWIxN2EtNWRiMGJkNmQ3NGFmIiwibmFtZSI6InRlc3RlIiwiZW1haWwiOiJ0ZXN0ZUBlbWFpbC5jb20iLCJjaGFubmVscyI6W119LHsiaWQiOiI5YjdkNWIyYy02YmFiLTQzMzItOWJmYS01NmY4ZTY3YWIyYmYiLCJuYW1lIjoidGVzdGUiLCJlbWFpbCI6InRlc3RlMkBlbWFpbC5jb20iLCJjaGFubmVscyI6W119XSwibWVzc2FnZXMiOltdfV19LCJpYXQiOjE3MTQxMzM4OTksImV4cCI6MTcxNDEzNDA3OSwic3ViIjoiOWI3ZDViMmMtNmJhYi00MzMyLTliZmEtNTZmOGU2N2FiMmJmIn0.9_p09ixTkhe8jFr95cSWFneD67Mtc4lzHP14qBxsMns
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyIjp7ImlkIjoiYmJkYzk4Y2QtZjhmMC00ZDJiLWEzZGQtZDhjMjBkNzc5MDE1IiwibmFtZSI6InRlc3RlIiwiZW1haWwiOiJ0ZXN0ZWphQGVtYWlsLmNvbSIsImNoYW5uZWxzIjpbXX0sImlhdCI6MTcyMDIwMzg0NiwiZXhwIjoxNzIwMjA0MDI2LCJzdWIiOiJiYmRjOThjZC1mOGYwLTRkMmItYTNkZC1kOGMyMGQ3NzkwMTUifQ.oBuSHxtNqdM3aKAUPIU1ABSu3TCpQWRrg1vnfWQL_kE
 
 {
     "type": "direct",
     "name": "Hello World",
     "members": [
-        "teste@email.com",
-        "teste2@email.com"
+        "testeja@email.com",
+        "teste@email.com"
     ]
 }
 
 ### 
 POST http://localhost:3000/chat/channels
 Content-type: application/json
-Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyIjp7ImlkIjoiOWI3ZDViMmMtNmJhYi00MzMyLTliZmEtNTZmOGU2N2FiMmJmIiwibmFtZSI6InRlc3RlIiwiZW1haWwiOiJ0ZXN0ZTJAZW1haWwuY29tIiwiY2hhbm5lbHMiOlt7ImlkIjoiNWE0NTkzMDEtMDI0ZS00M2I3LWJhNGUtYWZjY2Q3ZDBhNDM5IiwibmFtZSI6bnVsbCwibWVtYmVycyI6W3siaWQiOiJjOTM4Yjk0NS1iYWZjLTQ1ZTAtYjE3YS01ZGIwYmQ2ZDc0YWYiLCJuYW1lIjoidGVzdGUiLCJlbWFpbCI6InRlc3RlQGVtYWlsLmNvbSIsImNoYW5uZWxzIjpbXX0seyJpZCI6IjliN2Q1YjJjLTZiYWItNDMzMi05YmZhLTU2ZjhlNjdhYjJiZiIsIm5hbWUiOiJ0ZXN0ZSIsImVtYWlsIjoidGVzdGUyQGVtYWlsLmNvbSIsImNoYW5uZWxzIjpbXX1dLCJtZXNzYWdlcyI6W119LHsiaWQiOiJmYWI0NjQ3My1mODlhLTQ3ZTQtYTY0YS0wYmI4ZmU4NTBlZDEiLCJtZW1iZXJzIjpbeyJpZCI6ImM5MzhiOTQ1LWJhZmMtNDVlMC1iMTdhLTVkYjBiZDZkNzRhZiIsIm5hbWUiOiJ0ZXN0ZSIsImVtYWlsIjoidGVzdGVAZW1haWwuY29tIiwiY2hhbm5lbHMiOltdfSx7ImlkIjoiOWI3ZDViMmMtNmJhYi00MzMyLTliZmEtNTZmOGU2N2FiMmJmIiwibmFtZSI6InRlc3RlIiwiZW1haWwiOiJ0ZXN0ZTJAZW1haWwuY29tIiwiY2hhbm5lbHMiOltdfV0sIm1lc3NhZ2VzIjpbXX0seyJpZCI6IjkwNTJiNTQwLWZjY2YtNDIzNi1hZTVjLWFjOTI2NTcxMjhiMyIsIm5hbWUiOiJUZXN0ZSIsIm1lbWJlcnMiOlt7ImlkIjoiYzkzOGI5NDUtYmFmYy00NWUwLWIxN2EtNWRiMGJkNmQ3NGFmIiwibmFtZSI6InRlc3RlIiwiZW1haWwiOiJ0ZXN0ZUBlbWFpbC5jb20iLCJjaGFubmVscyI6W119LHsiaWQiOiI5YjdkNWIyYy02YmFiLTQzMzItOWJmYS01NmY4ZTY3YWIyYmYiLCJuYW1lIjoidGVzdGUiLCJlbWFpbCI6InRlc3RlMkBlbWFpbC5jb20iLCJjaGFubmVscyI6W119XSwibWVzc2FnZXMiOltdfSx7ImlkIjoiMmEwZWVjNzMtMTRmMC00MmNiLWJlYjctMjZiMDNhYThlODJmIiwibmFtZSI6IlRlc3RlIiwibWVtYmVycyI6W3siaWQiOiJjOTM4Yjk0NS1iYWZjLTQ1ZTAtYjE3YS01ZGIwYmQ2ZDc0YWYiLCJuYW1lIjoidGVzdGUiLCJlbWFpbCI6InRlc3RlQGVtYWlsLmNvbSIsImNoYW5uZWxzIjpbXX0seyJpZCI6IjliN2Q1YjJjLTZiYWItNDMzMi05YmZhLTU2ZjhlNjdhYjJiZiIsIm5hbWUiOiJ0ZXN0ZSIsImVtYWlsIjoidGVzdGUyQGVtYWlsLmNvbSIsImNoYW5uZWxzIjpbXX1dLCJtZXNzYWdlcyI6W119XX0sImlhdCI6MTcxNDEzNDIzNSwiZXhwIjoxNzE0MTM0NDE1LCJzdWIiOiI5YjdkNWIyYy02YmFiLTQzMzItOWJmYS01NmY4ZTY3YWIyYmYifQ.ADQneQdXeJWK4WIqM1rcV8BvgbAebmxw_qvNRFY7pFo
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyIjp7ImlkIjoiYmJkYzk4Y2QtZjhmMC00ZDJiLWEzZGQtZDhjMjBkNzc5MDE1IiwibmFtZSI6InRlc3RlIiwiZW1haWwiOiJ0ZXN0ZWphQGVtYWlsLmNvbSIsImNoYW5uZWxzIjpbXX0sImlhdCI6MTcyMDIwMzg0NiwiZXhwIjoxNzIwMjA0MDI2LCJzdWIiOiJiYmRjOThjZC1mOGYwLTRkMmItYTNkZC1kOGMyMGQ3NzkwMTUifQ.oBuSHxtNqdM3aKAUPIU1ABSu3TCpQWRrg1vnfWQL_kE
 
 {
     "type": "group",
-    "name": "Teste",
+    "name": "Teste 2",
     "members": [
         "teste@email.com",
-        "teste2@email.com"
+        "testeja@email.com"
     ]
 }
+### 
+DELETE http://localhost:3000/chat/channels
+Content-type: application/json
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyIjp7ImlkIjoiY2JiM2ZlMjQtYmNiNS00ODI3LThiOTAtZGU5MjBjMjQ2YWZkIiwibmFtZSI6InRlc3RlIiwiZW1haWwiOiJ0ZXN0ZUBlbWFpbC5jb20iLCJjaGFubmVscyI6W119LCJpYXQiOjE3MTQxNTM4NDcsImV4cCI6MTcxNDE1NDAyNywic3ViIjoiY2JiM2ZlMjQtYmNiNS00ODI3LThiOTAtZGU5MjBjMjQ2YWZkIn0.eA_EtHvUVikV02DnexxujNpH4DnKA3plIe43-1YgVNY
+
+{
+    "id": "6551ae1f-d22c-4ac2-b1da-a8e1a1eab191"
+}
+### 
+PUT http://localhost:3000/chat/channels
+Content-type: application/json
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyIjp7ImlkIjoiY2JiM2ZlMjQtYmNiNS00ODI3LThiOTAtZGU5MjBjMjQ2YWZkIiwibmFtZSI6InRlc3RlIiwiZW1haWwiOiJ0ZXN0ZUBlbWFpbC5jb20iLCJjaGFubmVscyI6W119LCJpYXQiOjE3MTQxNTcwNTcsImV4cCI6MTcxNDE1NzIzNywic3ViIjoiY2JiM2ZlMjQtYmNiNS00ODI3LThiOTAtZGU5MjBjMjQ2YWZkIn0.NotlwJeKBn4Ir4gSRetWiKFK0L_WIiwMAbmqZs3Ic1A
+
+{
+    "id": "81704cac-9d6d-4d23-8b9b-56a48e45d1df",
+    "name": "Hello World 2",
+    "members": [
+        "teste@email.com",
+        "teste@email.com"
+    ]
+}
+
+###
+GET http://localhost:3000/chat/channels/81704cac-9d6d-4d23-8b9b-56a48e45d1df
+Content-type: application/json
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyIjp7ImlkIjoiYmJkYzk4Y2QtZjhmMC00ZDJiLWEzZGQtZDhjMjBkNzc5MDE1IiwibmFtZSI6InRlc3RlIiwiZW1haWwiOiJ0ZXN0ZWphQGVtYWlsLmNvbSIsImNoYW5uZWxzIjpbXX0sImlhdCI6MTcyNTI5MDM4NywiZXhwIjoxNzI1MjkwNTY3LCJzdWIiOiJiYmRjOThjZC1mOGYwLTRkMmItYTNkZC1kOGMyMGQ3NzkwMTUifQ.9uQ8xbaJ8zpageBsX2FfsjgsbWs_IjKtDoOyoVSN2wI

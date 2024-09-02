@@ -57,3 +57,7 @@ export const makeDeleteChannelController = () => {
 export const makeUpdateChannelController = () => {
   return new controllers.UpdateChannelController(makeChannelService());
 };
+
+export const makeGetChannelController = () => {
+  return new controllers.GetChannelController(makeChannelService());
+};

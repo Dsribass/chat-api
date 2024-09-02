@@ -3,6 +3,7 @@ import { ChatServer } from "./common/socket-io/namespace/chat-server";
 import {
   makeCreateChannelController,
   makeDeleteChannelController,
+  makeGetChannelController,
   makeRefreshTokenController,
   makeSignInController,
   makeSignUpController,
@@ -47,6 +48,10 @@ const routes = {
   ) => {
     const chatIO: ChatServer = fastify.io.of("/chat");
     fastify.addHook("preValidation", ensureClientIsAuthorized);
+
+    fastify.get("/channels/:id", {
+      handler: makeGetChannelController().handler,
+    });
 
     fastify.post("/channels", {
       schema: createChannelSchema,

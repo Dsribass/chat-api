@@ -1,5 +1,5 @@
 import { PrismaClient } from "@prisma/client";
-import { Channel } from "../models/channel/channel";
+import { Channel, ChannelUser } from "../models/channel/channel";
 import { DirectChannel } from "../models/channel/direct-channel";
 import { GroupChannel } from "../models/channel/group-channel";
 import { ApplicationError } from "../common";
@@ -18,6 +18,9 @@ export interface IChannelService {
   updateChannel: (
     params: IChannelService.UpdateChannelParams
   ) => Promise<IChannelService.UpdateChannelResult>;
+  getChannel: (
+    params: IChannelService.GetChannelParams
+  ) => Promise<IChannelService.GetChannelResult>;
 }
 
 export class ChannelService implements IChannelService {
@@ -55,7 +58,7 @@ export class ChannelService implements IChannelService {
         },
         messages: {
           createMany: {
-            data: this.createMessageModelList(channel.messages),
+            data: this.mapMessageListToMessageModelList(channel.messages),
           },
         },
       },
@@ -75,7 +78,7 @@ export class ChannelService implements IChannelService {
         },
         messages: {
           createMany: {
-            data: this.createMessageModelList(channel.messages),
+            data: this.mapMessageListToMessageModelList(channel.messages),
           },
         },
       },
@@ -111,11 +114,71 @@ export class ChannelService implements IChannelService {
     });
   }
 
-  private createMessageModelList(messages: Message[]) {
+  async getChannel(param: IChannelService.GetChannelParams) {
+    const { channelId } = param;
+
+    const channel = await this.prismaClient.channel.findFirst({
+      where: { id: channelId },
+      include: {
+        members: true,
+        messages: true,
+      },
+    });
+
+    if (!channel) {
+      throw new ApplicationError({
+        message: "Channel not exists",
+        statusCode: 404,
+      });
+    }
+
+    if (channel.type === "DIRECT") {
+      return new DirectChannel({
+        id: channel.id,
+        members: channel.members.map((member) => ({
+          id: member.id,
+          name: member.name,
+          email: member.email,
+        })) as [ChannelUser, ChannelUser],
+        messages: this.mapMessageModelListToMessageList(channel.messages),
+      });
+    } else {
+      return new GroupChannel({
+        id: channel.id,
+        name: channel.name!,
+        members: channel.members.map((member) => ({
+          id: member.id,
+          name: member.name,
+          email: member.email,
+        })),
+        messages: this.mapMessageModelListToMessageList(channel.messages),
+      });
+    }
+  }
+
+  private mapMessageListToMessageModelList(messages: Message[]) {
     return messages.map((message) => ({
       id: message.id,
       content: message.content,
       createdAt: new Date(message.timestamp),
+      senderId: message.senderId,
+      channelId: message.channelId,
+    }));
+  }
+
+  private mapMessageModelListToMessageList(
+    messages: {
+      id: string;
+      content: string;
+      createdAt: Date;
+      senderId: string;
+      channelId: string;
+    }[]
+  ): Message[] {
+    return messages.map((message) => ({
+      id: message.id,
+      content: message.content,
+      timestamp: message.createdAt.getTime(),
       senderId: message.senderId,
       channelId: message.channelId,
     }));
@@ -148,4 +211,10 @@ namespace IChannelService {
   };
 
   export type UpdateChannelResult = void;
+
+  export type GetChannelParams = {
+    channelId: string;
+  };
+
+  export type GetChannelResult = Channel;
 }
