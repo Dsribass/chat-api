@@ -1,12 +1,16 @@
 import { FastifyReply, FastifyRequest, HookHandlerDoneFunction } from "fastify";
 import { verify } from "jsonwebtoken";
 import { ApplicationError } from "../common/errors";
+import { AuthenticationHandler } from "../common";
 
-function ensureClientIsAuthorized(
-  request: FastifyRequest,
-  reply: FastifyReply,
-  done: HookHandlerDoneFunction
-) {
+function ensureClientIsAuthorized(props: {
+  authenticationHandler: AuthenticationHandler;
+  request: FastifyRequest;
+  reply: FastifyReply;
+  done: HookHandlerDoneFunction;
+}) {
+  const { authenticationHandler, request, done } = props;
+  
   const bearerToken = request.headers.authorization;
 
   if (!bearerToken) {
@@ -18,15 +22,8 @@ function ensureClientIsAuthorized(
 
   const [_, token] = bearerToken.split(" ");
 
-  try {
-    verify(token, process.env.ACCESS_TOKEN_SECRET);
-    done();
-  } catch (_) {
-    throw new ApplicationError({
-      message: "Invalid token",
-      statusCode: 401,
-    });
-  }
+  authenticationHandler.verifyToken(token);
+  done();
 }
 
 export { ensureClientIsAuthorized };

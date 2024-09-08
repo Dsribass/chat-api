@@ -5,8 +5,6 @@ import * as service from "./services";
 
 const prismaClient = new PrismaClient();
 
-const authenticationHandler = new common.AuthenticationHandler();
-
 const makeChannelService = () => {
   return new service.ChannelService(prismaClient);
 };
@@ -19,11 +17,15 @@ const makeUserService = () => {
   return new service.UserService(prismaClient);
 };
 
+export const makeAuthenticationHandler = () => {
+  return new common.AuthenticationHandler();
+};
+
 export const makeRefreshTokenController = () => {
   return new controllers.RefreshTokenController(
     makeUserService(),
     makeTokenService(),
-    authenticationHandler
+    makeAuthenticationHandler()
   );
 };
 
@@ -31,7 +33,7 @@ export const makeSignInController = () => {
   return new controllers.SignInController(
     makeUserService(),
     makeTokenService(),
-    authenticationHandler
+    makeAuthenticationHandler()
   );
 };
 
@@ -39,7 +41,7 @@ export const makeSignUpController = () => {
   return new controllers.SignUpController(
     makeUserService(),
     makeTokenService(),
-    authenticationHandler
+    makeAuthenticationHandler()
   );
 };
 

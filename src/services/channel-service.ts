@@ -4,6 +4,7 @@ import { DirectChannel } from "../models/channel/direct-channel";
 import { GroupChannel } from "../models/channel/group-channel";
 import { ApplicationError } from "../common";
 import { Message } from "../models/message";
+import { EventEmitter } from "stream";
 
 export interface IChannelService {
   createDirectChannel: (
@@ -25,6 +26,8 @@ export interface IChannelService {
 
 export class ChannelService implements IChannelService {
   constructor(private prismaClient: PrismaClient) {}
+
+  private readonly emitter: EventEmitter = new EventEmitter();
 
   async createDirectChannel(param: IChannelService.CreateDirectChannelParams) {
     const { channel } = param;
@@ -63,6 +66,8 @@ export class ChannelService implements IChannelService {
         },
       },
     });
+
+    this.emitter.emit("channel-created", channel.id);
   }
 
   async createGroupChannel(param: IChannelService.CreateGroupChannelParams) {

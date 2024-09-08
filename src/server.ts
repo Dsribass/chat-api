@@ -6,8 +6,11 @@ import {
   validatorCompiler,
 } from "fastify-type-provider-zod";
 import { ZodError } from "zod";
-import { applicationRoutes } from "./routes";
-import socketIoPlugin from "./common/socket-io/socket-io-plugin";
+import socketIoPlugin from "./common/socket-io-plugin";
+import { httpRoutes } from "./routes";
+import { ChatNamespace } from "./sockets/namespaces/chat";
+import { SocketServer } from "./sockets/server";
+import { makeAuthenticationHandler } from "./factory";
 
 const start = async () => {
   dotenv.config();
@@ -20,7 +23,14 @@ const start = async () => {
     app.setErrorHandler(errorHandler);
     app.register(socketIoPlugin);
 
-    await app.register(applicationRoutes);
+    const socketServer = new SocketServer({
+      socketIO: app.io,
+      authenticationHandler: makeAuthenticationHandler(),
+      namespaces: [new ChatNamespace()],
+    });
+
+    await app.register(httpRoutes);
+    await app.register(socketServer.setup);
     await app.listen({ port: process.env.PORT });
   } catch (err) {
     app.log.error(err);

@@ -1,5 +1,6 @@
-import { sign } from "jsonwebtoken";
+import { sign, verify } from "jsonwebtoken";
 import { User } from "../models/user";
+import { ApplicationError } from "./errors";
 
 export class AuthenticationHandler {
   generateAccessToken(user: User) {
@@ -21,5 +22,16 @@ export class AuthenticationHandler {
     const accessToken = this.generateAccessToken(user);
 
     return { accessToken, refreshToken };
+  }
+
+  verifyToken(token: string) {
+    try {
+      verify(token, process.env.ACCESS_TOKEN_SECRET);
+    } catch (_) {
+      throw new ApplicationError({
+        message: "Invalid token",
+        statusCode: 401,
+      });
+    }
   }
 }

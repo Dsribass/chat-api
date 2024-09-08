@@ -1,6 +1,6 @@
 import { FastifyInstance, HookHandlerDoneFunction } from "fastify";
-import { ChatServer } from "./common/socket-io/namespace/chat-server";
 import {
+  makeAuthenticationHandler,
   makeCreateChannelController,
   makeDeleteChannelController,
   makeGetChannelController,
@@ -9,13 +9,12 @@ import {
   makeSignUpController,
   makeUpdateChannelController,
 } from "./factory";
+import { ensureClientIsAuthorized } from "./middlewares/ensure-client-is-authorized";
+import createChannelSchema from "./schemas/create-channel-schema";
+import deleteChannelSchema from "./schemas/delete-channel-schema";
 import refreshTokenSchema from "./schemas/refresh-token-schema";
 import signInSchema from "./schemas/sign-in-schema";
 import signUpSchema from "./schemas/sign-up-schema";
-import { ensureClientIsAuthorized } from "./middlewares/ensure-client-is-authorized";
-import createChannelSchema from "./schemas/create-channel-schema";
-import { z } from "zod";
-import deleteChannelSchema from "./schemas/delete-channel-schema";
 import updateChannelSchema from "./schemas/update-channel-schema";
 
 const routes = {
@@ -46,8 +45,14 @@ const routes = {
     options: any,
     done: HookHandlerDoneFunction
   ) => {
-    const chatIO: ChatServer = fastify.io.of("/chat");
-    fastify.addHook("preValidation", ensureClientIsAuthorized);
+    fastify.addHook("preValidation", (request, reply, done) =>
+      ensureClientIsAuthorized({
+        authenticationHandler: makeAuthenticationHandler(),
+        request,
+        reply,
+        done,
+      })
+    );
 
     fastify.get("/channels/:id", {
       handler: makeGetChannelController().handler,
@@ -68,15 +73,13 @@ const routes = {
       handler: makeUpdateChannelController().handler,
     });
 
-    chatIO.on("connection", (socket) => {});
-
     done();
   },
 };
 
-async function applicationRoutes(instance: FastifyInstance, options: any) {
+async function httpRoutes(instance: FastifyInstance, options: any) {
   instance.register(routes.auth, { prefix: "/auth" });
   instance.register(routes.chat, { prefix: "/chat" });
 }
 
-export { applicationRoutes };
+export { httpRoutes };
