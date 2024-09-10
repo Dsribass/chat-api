@@ -1,14 +1,17 @@
 import { Namespace, Socket } from "socket.io";
 import { SocketNamespace } from "../server";
+import { AuthenticationHandler } from "../../common/authentication-handler";
+import { ApplicationError } from "../../common/errors";
 
 export class ChatNamespace extends SocketNamespace<ChatServer, ChatSocket> {
-  constructor() {
-    super("/chat");
+  constructor(authenticationHandler: AuthenticationHandler) {
+    super("/chat", authenticationHandler);
   }
 
   private readonly onlineUsers: [id: string, socket: string][] = [];
 
   onConnection(socket: ChatSocket): void {
+    console.log("Socket connection ${socket.id}");
     const userId = socket.data.userId;
     const hasUser = this.onlineUsers.some(([id]) => id === userId);
     if (!hasUser) {

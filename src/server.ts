@@ -16,6 +16,9 @@ const start = async () => {
   dotenv.config();
 
   const app = Fastify({ logger: true }).withTypeProvider<ZodTypeProvider>();
+  const socketServer = new SocketServer([
+    new ChatNamespace(makeAuthenticationHandler()),
+  ]);
 
   try {
     app.setValidatorCompiler(validatorCompiler);
@@ -23,15 +26,10 @@ const start = async () => {
     app.setErrorHandler(errorHandler);
     app.register(socketIoPlugin);
 
-    const socketServer = new SocketServer({
-      socketIO: app.io,
-      authenticationHandler: makeAuthenticationHandler(),
-      namespaces: [new ChatNamespace()],
-    });
-
     await app.register(httpRoutes);
-    await app.register(socketServer.setup);
-    await app.listen({ port: process.env.PORT });
+    await app.listen({ port: process.env.PORT }).then(() => {
+      socketServer.setup(app.io);
+    });
   } catch (err) {
     app.log.error(err);
     process.exit(1);
@@ -40,7 +38,7 @@ const start = async () => {
 
 function errorHandler(
   error: FastifyError,
-  request: FastifyRequest,
+  _request: FastifyRequest,
   reply: FastifyReply
 ) {
   if (error instanceof ZodError) {
