@@ -16,12 +16,12 @@ abstract class SocketNamespace<N extends Namespace, S extends Socket> {
     this.io.on("connection", (socket) => this.onConnection(socket as S));
   }
 
-
   private registerJWTValidation(): void {
     this.io.use((socket, next) => {
-      const token = socket.handshake.auth.token;
+      const bearerToken =
+        socket.handshake.auth.token ?? socket.request.headers.authorization;
 
-      if (!token) {
+      if (!bearerToken) {
         next(
           new ApplicationError({
             message: "Token not provided",
@@ -29,6 +29,8 @@ abstract class SocketNamespace<N extends Namespace, S extends Socket> {
           })
         );
       }
+
+      const [_, token] = bearerToken.split(" ");
 
       try {
         this.authenticationHandler.verifyToken(token);
