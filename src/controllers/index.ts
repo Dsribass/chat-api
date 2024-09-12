@@ -5,3 +5,5 @@ export * from "./channel/create-channel-controller";
 export * from "./channel/delete-channel-controller";
 export * from "./channel/update-channel-controller";
 export * from "./channel/get-channel-controller";
+export * from "./message/send-message-controller";
+export * from "./message/read-message-controller";

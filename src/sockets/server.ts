@@ -1,4 +1,3 @@
-import { FastifyInstance } from "fastify";
 import { Namespace, Server, Socket } from "socket.io";
 import { ApplicationError, AuthenticationHandler } from "../common";
 
@@ -56,4 +55,9 @@ class SocketServer {
   }
 }
 
-export { SocketNamespace, SocketServer };
+type SocketCallback = (response: {
+  status: "success" | "error";
+  message?: string;
+}) => void;
+
+export { SocketNamespace, SocketServer, SocketCallback };

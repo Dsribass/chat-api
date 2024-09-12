@@ -7,10 +7,10 @@ import {
 } from "fastify-type-provider-zod";
 import { ZodError } from "zod";
 import socketIoPlugin from "./common/socket-io-plugin";
+import { makeAuthenticationHandler } from "./factory";
 import { httpRoutes } from "./routes";
 import { ChatNamespace } from "./sockets/namespaces/chat";
 import { SocketServer } from "./sockets/server";
-import { makeAuthenticationHandler } from "./factory";
 
 const start = async () => {
   dotenv.config();

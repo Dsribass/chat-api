@@ -52,6 +52,7 @@ model Message {
   senderId  String
   channel   Channel  @relation(fields: [channelId], references: [id])
   channelId String
+  readBy    String[]
 
   @@map("messages")
 }

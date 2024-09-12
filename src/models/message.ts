@@ -7,12 +7,14 @@ export class Message {
     content: string;
     senderId: string;
     timestamp?: number;
+    readBy?: string[];
   }) {
     this.id = props.id ?? randomUUID();
     this.content = props.content;
     this.channelId = props.channelId;
     this.senderId = props.senderId;
     this.timestamp = props.timestamp ?? Date.now();
+    this.readBy = props.readBy ?? [];
   }
 
   readonly id: string;
@@ -20,4 +22,5 @@ export class Message {
   readonly senderId: string;
   readonly content: string;
   readonly timestamp: number;
+  readonly readBy: string[];
 }

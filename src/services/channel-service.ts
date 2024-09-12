@@ -22,12 +22,16 @@ export interface IChannelService {
   getChannel: (
     params: IChannelService.GetChannelParams
   ) => Promise<IChannelService.GetChannelResult>;
+  saveMessage: (
+    params: IChannelService.SaveMessageParams
+  ) => Promise<IChannelService.SaveMessageResult>;
+  readMessage: (
+    params: IChannelService.ReadMessageParams
+  ) => Promise<IChannelService.ReadMessageResult>;
 }
 
 export class ChannelService implements IChannelService {
   constructor(private prismaClient: PrismaClient) {}
-
-  private readonly emitter: EventEmitter = new EventEmitter();
 
   async createDirectChannel(param: IChannelService.CreateDirectChannelParams) {
     const { channel } = param;
@@ -66,8 +70,6 @@ export class ChannelService implements IChannelService {
         },
       },
     });
-
-    this.emitter.emit("channel-created", channel.id);
   }
 
   async createGroupChannel(param: IChannelService.CreateGroupChannelParams) {
@@ -161,6 +163,41 @@ export class ChannelService implements IChannelService {
     }
   }
 
+  async saveMessage(param: IChannelService.SaveMessageParams) {
+    const { message } = param;
+
+    await this.prismaClient.message.create({
+      data: {
+        id: message.id,
+        content: message.content,
+        createdAt: new Date(message.timestamp),
+        senderId: message.senderId,
+        channelId: message.channelId,
+        readBy: [],
+      },
+    });
+  }
+
+  async readMessage(param: IChannelService.ReadMessageParams) {
+    const { userId, channelId } = param;
+
+    await this.prismaClient.message.updateMany({
+      where: {
+        channelId,
+        NOT: {
+          readBy: {
+            has: userId,
+          },
+        },
+      },
+      data: {
+        readBy: {
+          push: userId,
+        },
+      },
+    });
+  }
+
   private mapMessageListToMessageModelList(messages: Message[]) {
     return messages.map((message) => ({
       id: message.id,
@@ -178,6 +215,7 @@ export class ChannelService implements IChannelService {
       createdAt: Date;
       senderId: string;
       channelId: string;
+      readBy: string[];
     }[]
   ): Message[] {
     return messages.map((message) => ({
@@ -186,6 +224,7 @@ export class ChannelService implements IChannelService {
       timestamp: message.createdAt.getTime(),
       senderId: message.senderId,
       channelId: message.channelId,
+      readBy: message.readBy,
     }));
   }
 }
@@ -222,4 +261,17 @@ namespace IChannelService {
   };
 
   export type GetChannelResult = Channel;
+
+  export type SaveMessageParams = {
+    message: Message;
+  };
+
+  export type SaveMessageResult = void;
+
+  export type ReadMessageParams = {
+    userId: string;
+    channelId: string;
+  };
+
+  export type ReadMessageResult = void;
 }

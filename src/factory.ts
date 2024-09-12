@@ -63,3 +63,11 @@ export const makeUpdateChannelController = () => {
 export const makeGetChannelController = () => {
   return new controllers.GetChannelController(makeChannelService());
 };
+
+export const makeSendMessageController = () => {
+  return new controllers.SendMessageController(makeChannelService());
+};
+
+export const makeReadMessageController = () => {
+  return new controllers.ReadMessageController(makeChannelService());
+};

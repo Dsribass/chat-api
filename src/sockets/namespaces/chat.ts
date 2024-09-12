@@ -1,7 +1,31 @@
 import { Namespace, Socket } from "socket.io";
-import { SocketNamespace } from "../server";
 import { AuthenticationHandler } from "../../common/authentication-handler";
-import { ApplicationError } from "../../common/errors";
+import { SendMessageController } from "../../controllers/message/send-message-controller";
+import {
+  makeReadMessageController,
+  makeSendMessageController,
+} from "../../factory";
+import { SocketCallback, SocketNamespace } from "../server";
+import { ReadMessageController } from "../../controllers";
+
+interface ServerToClientEvents {
+  receivedMessage: (data: SendMessageController.OutgoingEventData) => void;
+  readMessage: (data: ReadMessageController.OutgoingEventData) => void;
+}
+
+interface ClientToServerEvents {
+  sendMessage: (
+    data: SendMessageController.IncomingEventData,
+    callback: SocketCallback
+  ) => void;
+  readMessage: (data: ReadMessageController.IncomingEventData) => void;
+}
+
+interface InterServerEvents {}
+
+interface SocketData {
+  userId: string;
+}
 
 export class ChatNamespace extends SocketNamespace<ChatServer, ChatSocket> {
   constructor(authenticationHandler: AuthenticationHandler) {
@@ -11,7 +35,6 @@ export class ChatNamespace extends SocketNamespace<ChatServer, ChatSocket> {
   private readonly onlineUsers: [id: string, socket: string][] = [];
 
   onConnection(socket: ChatSocket): void {
-    console.log("Socket connection ${socket.id}");
     const userId = socket.data.userId;
     const hasUser = this.onlineUsers.some(([id]) => id === userId);
     if (!hasUser) {
@@ -24,27 +47,50 @@ export class ChatNamespace extends SocketNamespace<ChatServer, ChatSocket> {
         this.onlineUsers.splice(index, 1);
       }
     });
+
+    socket.on("readMessage", async (incomingData) => {
+      const readMessageController = makeReadMessageController();
+
+      await readMessageController.handler(incomingData, (outgoingData) => {
+        this.onlineUsers
+          .filter(([id]) => outgoingData.recipients.includes(id))
+          .forEach(([_, socketId]) => {
+            this.io.to(socketId).emit("readMessage", outgoingData);
+          });
+      });
+    });
+
+    socket.on("sendMessage", async (incomingData, callback) => {
+      const sendMessageController = makeSendMessageController();
+
+      try {
+        await sendMessageController.handler(incomingData, (outgoingData) => {
+          this.onlineUsers
+            .filter(([id]) => outgoingData.recipients.includes(id))
+            .forEach(([_, socketId]) => {
+              this.io.to(socketId).emit("receivedMessage", outgoingData);
+            });
+
+          callback({ status: "success" });
+        });
+      } catch (error: any) {
+        callback({
+          status: "error",
+          message: error.message || "An error occurred",
+        });
+      }
+    });
   }
 }
 
-interface ServerToClientEvents {}
-
-interface ClientToServerEvents {}
-
-interface InterServerEvents {}
-
-interface SocketData {
-  userId: string;
-}
-
-export type ChatSocket = Socket<
+type ChatSocket = Socket<
   ClientToServerEvents,
   ServerToClientEvents,
   InterServerEvents,
   SocketData
 >;
 
-export type ChatServer = Namespace<
+type ChatServer = Namespace<
   ClientToServerEvents,
   ServerToClientEvents,
   InterServerEvents,
