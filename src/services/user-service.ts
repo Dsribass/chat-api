@@ -68,7 +68,7 @@ export class UserService implements IUserService {
     if (!passwordMatch) {
       throw new ApplicationError({
         message: "Cannot sign in, password is incorrect",
-        statusCode: 400,
+        statusCode: 401,
       });
     }
 
