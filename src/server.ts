@@ -46,7 +46,7 @@ function errorHandler(
       statusCode: 400,
       error: "Bad Request",
       message: "Validation error",
-      issues: error.issues,
+      inputIssues: error.flatten().fieldErrors,
     });
     return;
   }
