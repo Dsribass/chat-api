@@ -1,10 +1,10 @@
+
 POST http://localhost:3000/auth/sign-up
 Content-type: application/json
 
 {
-    "name": "teste",
-    "email": "teste@email.com",
-    "password": "12345678"
+    "email": "dane@email.com",
+    "password": "1234567a"
 }
 
 ###
@@ -12,7 +12,7 @@ POST http://localhost:3000/auth/sign-in
 Content-type: application/json
 
 {
-    "email": "testeja@email.com",
+    "email": "dan@email.com",
     "password": "12345678"
 }
 
@@ -68,7 +68,7 @@ Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyIjp7ImlkIjoiY
     "id": "81704cac-9d6d-4d23-8b9b-56a48e45d1df",
     "name": "Hello World 2",
     "members": [
-        "teste@email.com",
+        "testjje@email.com",
         "teste@email.com"
     ]
 }

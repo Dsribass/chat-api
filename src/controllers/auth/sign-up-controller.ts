@@ -16,9 +16,8 @@ export class SignUpController {
     request: FastifyRequest<{ Body: SignUpController.Body }>,
     reply: FastifyReply
   ) {
-    const user = await this.userService
-      .createUser(request.body)
-      .then((user) => new User({ ...user }));
+    const user = await this.userService.createUser(request.body);
+
     const tokens = this.authenticationHandler.generateUserToken(user);
     await this.tokenService.persistRefreshToken({
       token: tokens.refreshToken,
@@ -34,7 +33,6 @@ export class SignUpController {
 
 namespace SignUpController {
   export interface Body {
-    name: string;
     email: string;
     password: string;
   }

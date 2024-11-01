@@ -4,7 +4,6 @@ import user from "./user-schema-props";
 
 export default {
   body: z.object({
-    name: user.name,
     email: user.email,
     password: user.password,
   }),

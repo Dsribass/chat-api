@@ -40,7 +40,6 @@ export class UserService implements IUserService {
       .create({
         data: {
           id: randomUUID(),
-          name: param.name,
           email: param.email,
           password: hashedPassword,
         },
@@ -108,7 +107,6 @@ export class UserService implements IUserService {
 
 namespace IUserService {
   export type CreateUserParams = {
-    name: string;
     email: string;
     password: string;
   };
