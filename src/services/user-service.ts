@@ -2,7 +2,7 @@ import { PrismaClient } from "@prisma/client";
 import { User } from "../models/user";
 import { randomUUID } from "crypto";
 import bcrypt from "bcrypt";
-import { ApplicationError } from "../common";
+import { ApplicationError, ErrorType } from "../common";
 
 export interface IUserService {
   createUser: (
@@ -29,6 +29,7 @@ export class UserService implements IUserService {
 
     if (userAlreadyExists) {
       throw new ApplicationError({
+        type: ErrorType.ITEM_ALREADY_EXISTS,
         message: "Cannot sign up, email already in use",
         statusCode: 400,
       });
@@ -54,6 +55,7 @@ export class UserService implements IUserService {
 
     if (!userAlreadyExists) {
       throw new ApplicationError({
+        type: ErrorType.ITEM_NOT_FOUND,
         message: "Cannot sign in, user not found",
         statusCode: 404,
       });
@@ -66,6 +68,7 @@ export class UserService implements IUserService {
 
     if (!passwordMatch) {
       throw new ApplicationError({
+        type: ErrorType.INPUT_INVALID,
         message: "Cannot sign in, password is incorrect",
         statusCode: 401,
       });
@@ -81,6 +84,7 @@ export class UserService implements IUserService {
 
     if (!user) {
       throw new ApplicationError({
+        type: ErrorType.ITEM_NOT_FOUND,
         message: "User not found",
         statusCode: 404,
       });
@@ -96,6 +100,7 @@ export class UserService implements IUserService {
 
     if (!user) {
       throw new ApplicationError({
+        type: ErrorType.ITEM_NOT_FOUND,
         message: "User not found",
         statusCode: 404,
       });

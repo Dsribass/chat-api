@@ -2,7 +2,7 @@ import { PrismaClient } from "@prisma/client";
 import { Channel, ChannelUser } from "../models/channel/channel";
 import { DirectChannel } from "../models/channel/direct-channel";
 import { GroupChannel } from "../models/channel/group-channel";
-import { ApplicationError } from "../common";
+import { ApplicationError, ErrorType } from "../common";
 import { Message } from "../models/message";
 import { EventEmitter } from "stream";
 
@@ -51,6 +51,7 @@ export class ChannelService implements IChannelService {
 
     if (hasDirectChannelCreated) {
       throw new ApplicationError({
+        type: ErrorType.ITEM_ALREADY_EXISTS,
         message: "Direct channel already exists",
         statusCode: 400,
       });
@@ -101,8 +102,9 @@ export class ChannelService implements IChannelService {
       })
       .catch((_) => {
         throw new ApplicationError({
+          type: ErrorType.ITEM_NOT_FOUND,
           message: "Channel not exists",
-          statusCode: 500,
+          statusCode: 404,
         });
       });
   }
@@ -134,6 +136,7 @@ export class ChannelService implements IChannelService {
 
     if (!channel) {
       throw new ApplicationError({
+        type: ErrorType.ITEM_NOT_FOUND,
         message: "Channel not exists",
         statusCode: 404,
       });
@@ -155,7 +158,7 @@ export class ChannelService implements IChannelService {
         name: channel.name!,
         members: channel.members.map((member) => ({
           id: member.id,
-          name: member.name,
+          name: member.name ?? undefined,
           email: member.email,
         })),
         messages: this.mapMessageModelListToMessageList(channel.messages),

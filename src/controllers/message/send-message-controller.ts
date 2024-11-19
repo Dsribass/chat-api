@@ -1,4 +1,4 @@
-import { ApplicationError } from "../../common/errors";
+import { ApplicationError, ErrorType } from "../../common/errors";
 import { Message } from "../../models/message";
 import { IChannelService } from "../../services";
 
@@ -17,6 +17,7 @@ export class SendMessageController {
 
     if (!channel) {
       throw new ApplicationError({
+        type: ErrorType.ITEM_NOT_FOUND,
         message: "Channel not found",
       });
     }

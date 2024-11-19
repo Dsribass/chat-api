@@ -17,8 +17,7 @@ export class SignInController {
     reply: FastifyReply
   ) {
     const user = await this.userService
-      .authenticate(request.body)
-      .then((user) => new User({ ...user }));
+      .authenticate(request.body);
 
     const tokens = this.authenticationHandler.generateUserToken(user);
     await this.tokenService.persistRefreshToken({

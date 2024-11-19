@@ -1,4 +1,4 @@
-import { ApplicationError } from "../../common/errors";
+import { ApplicationError, ErrorType } from "../../common/errors";
 import { Message } from "../../models/message";
 import { IChannelService } from "../../services";
 
@@ -16,7 +16,11 @@ export class ReadMessageController {
     const channel = await this.channelService.getChannel({ channelId });
 
     if (!channel) {
-      throw new ApplicationError({ message: "Channel not found" });
+      throw new ApplicationError({
+        type: ErrorType.ITEM_NOT_FOUND,
+        message: "Channel not found",
+        statusCode: 404,
+      });
     }
 
     await this.channelService.readMessage({ userId, channelId });

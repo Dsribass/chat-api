@@ -9,6 +9,6 @@ export interface Channel {
 
 export type ChannelUser = {
   id: string;
-  name: string;
+  name?: string;
   email: string;
 }

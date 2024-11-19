@@ -1,6 +1,6 @@
 import { FastifyReply, FastifyRequest, HookHandlerDoneFunction } from "fastify";
 import { verify } from "jsonwebtoken";
-import { ApplicationError } from "../common/errors";
+import { ApplicationError, ErrorType } from "../common/errors";
 import { AuthenticationHandler } from "../common";
 
 function ensureClientIsAuthorized(props: {
@@ -15,6 +15,7 @@ function ensureClientIsAuthorized(props: {
 
   if (!bearerToken) {
     throw new ApplicationError({
+      type: ErrorType.INVALID_TOKEN,
       message: "Token not provided",
       statusCode: 401,
     });

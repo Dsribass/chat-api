@@ -1,5 +1,5 @@
 import { PrismaClient } from "@prisma/client";
-import { ApplicationError } from "../common";
+import { ApplicationError, ErrorType } from "../common";
 
 export interface ITokenService {
   persistRefreshToken: (
@@ -31,6 +31,7 @@ export class TokenService implements ITokenService {
 
     if (!refreshToken) {
       throw new ApplicationError({
+        type: ErrorType.ITEM_NOT_FOUND,
         message: "Refresh token not found",
         statusCode: 404,
       });

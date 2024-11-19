@@ -1,5 +1,5 @@
 import { FastifyReply, FastifyRequest } from "fastify";
-import { ApplicationError } from "../../common";
+import { ApplicationError, ErrorType } from "../../common";
 import { DirectChannel } from "../../models/channel/direct-channel";
 import { GroupChannel } from "../../models/channel/group-channel";
 import { User } from "../../models/user";
@@ -26,10 +26,11 @@ export class CreateChannelController {
 
   private async createChannel(body: CreateChannelController.Body) {
     const { type, name, members } = body;
-    
+
     if (type === "group") {
       if (members.length < 2) {
         throw new ApplicationError({
+          type: ErrorType.CHANNEL_MIN_MEMBERS,
           message: "Group channel must have at least 2 members",
           statusCode: 400,
         });
@@ -37,6 +38,7 @@ export class CreateChannelController {
 
       if (name === "" || name === null || name === undefined) {
         throw new ApplicationError({
+          type: ErrorType.CHANNEL_NAME_REQUIRED,
           message: "Group channel must have a name",
           statusCode: 400,
         });
@@ -55,6 +57,7 @@ export class CreateChannelController {
     } else {
       if (members.length !== 2) {
         throw new ApplicationError({
+          type: ErrorType.CHANNEL_MIN_MEMBERS,
           message: "Direct channel must have exactly 2 members",
           statusCode: 400,
         });

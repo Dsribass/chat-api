@@ -1,6 +1,6 @@
 import { sign, verify } from "jsonwebtoken";
 import { User } from "../models/user";
-import { ApplicationError } from "./errors";
+import { ApplicationError, ErrorType } from "./errors";
 
 export class AuthenticationHandler {
   generateAccessToken(user: User) {
@@ -29,6 +29,7 @@ export class AuthenticationHandler {
       verify(token, process.env.ACCESS_TOKEN_SECRET);
     } catch (_) {
       throw new ApplicationError({
+        type: ErrorType.INVALID_TOKEN,
         message: "Invalid token",
         statusCode: 401,
       });

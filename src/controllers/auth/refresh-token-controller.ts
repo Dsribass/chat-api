@@ -1,6 +1,6 @@
 import { FastifyReply, FastifyRequest } from "fastify";
 import { verify } from "jsonwebtoken";
-import { ApplicationError, AuthenticationHandler } from "../../common";
+import { ApplicationError, AuthenticationHandler, ErrorType } from "../../common";
 import { User } from "../../models/user";
 import { ITokenService, IUserService } from "../../services";
 
@@ -33,8 +33,7 @@ export class RefreshTokenController {
       });
 
       const user = await this.userService
-        .getUserById({ id: sub })
-        .then((user) => new User({ ...user }));
+        .getUserById({ id: sub });
       const accessToken = this.authenticationHandler.generateAccessToken(user);
 
       reply.send({ accessToken: accessToken });
@@ -44,6 +43,7 @@ export class RefreshTokenController {
       }
 
       throw new ApplicationError({
+        type: ErrorType.INVALID_TOKEN,
         message: "Refresh token invalid",
         statusCode: 401,
       });
